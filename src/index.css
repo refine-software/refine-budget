@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
 @theme {  
-    --color-mint-500: oklch(0.72 0.11 178);
+    --color-dark: #232323;
+    --color-primary: #F0841E;
+    --spacing-container: calc(100dvh - 80px);
+}
+
+body {
+    background-color: var(--color-bg-dark);
+    color: #fff;
+    font-size: 1.1rem;
 }

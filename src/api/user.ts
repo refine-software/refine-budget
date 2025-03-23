@@ -14,7 +14,6 @@ type User = {
 
 const getUser = async (): Promise<User> => {
     const res = api.get("user");
-
     const userRes = await res;
     return userRes.data;
 }
