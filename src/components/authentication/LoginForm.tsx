@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Form, useNavigate, useNavigation } from "react-router"
-import { getAccessToken } from "../../api/auth";
+import { getAccessToken } from "../../utils";
 
 const LoginForm = () => {
     const navigation = useNavigation();
@@ -8,9 +8,8 @@ const LoginForm = () => {
 
     useEffect(() => {
         const accesToken = getAccessToken();
-        if (accesToken) {
+        if (accesToken)
             navigate("/");
-        }
     });
 
     const isSubmitting = navigation.state === "submitting";

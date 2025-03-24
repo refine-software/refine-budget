@@ -1,11 +1,18 @@
-import { redirect } from "react-router";
 import api from "./axiosConfig";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
-// -------------------------------------------------------
-// API endpoints for user authentication -----------------
-// -------------------------------------------------------
+type LoginResType = {
+    access_token: string;
+    role: string;
+}
 
-const register = async (name: string, email: string, password: string, image: string): Promise<number> => {
+type LoginReqType = {
+    email: string;
+    password: string;
+    deviceId: string;
+}
+
+async function register(name: string, email: string, password: string, image: string): Promise<number> {
     const res = api.post("auth/register", {
         name,
         email,
@@ -15,37 +22,26 @@ const register = async (name: string, email: string, password: string, image: st
 
     const status = (await res).status;
     return status;
-};
+}
 
-const login = async (email: string, password: string): Promise<string> => {
-    const res = api.post("auth/login", {
-        email,
-        password
-    });
-
-    const token = (await res).data.token;
-    return token;
-};
+async function login({ email, password, deviceId }: LoginReqType): Promise<LoginResType | AxiosError | Error> {
+    try {
+        const res: AxiosResponse = await api.post("auth/login", {
+            "email": email,
+            "password": password
+        }, {
+            headers: {
+                "Device-ID": deviceId
+            }
+        });
+        return res.data as LoginResType;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            return err;
+        } else {
+            return new Error("An unknown error occurred");
+        }
+    }
+}
 
 export { register, login };
-
-// -------------------------------------------------------
-// Token management --------------------------------------
-// -------------------------------------------------------
-
-function getAccessToken(): string | null {
-    return localStorage.getItem("accessToken");
-}
-
-function authLoader() {
-    const accessToken = getAccessToken();
-    redirect(accessToken === null || accessToken === "" ? "/login" : "/");
-    return accessToken;
-}
-
-function checkAuthLoader(): null | Response {
-    const accessToken = getAccessToken();
-    return accessToken ? null : redirect("/login");
-}
-
-export { getAccessToken, authLoader, checkAuthLoader };
