@@ -1,15 +1,29 @@
 import { redirect } from "react-router";
-import { getAccessToken, getDeviceId } from "../../utils";
+import { getAccessToken, getDeviceId, setAccessToken } from "../../utils";
+import { refreshTokens } from "../../api";
+import axios from "axios";
 
-export function authGuardLoader(): null | Response {
+export async function authGuardLoader(): Promise<null | Response> {
   console.log("Checking auth...");
   const deviceId = getDeviceId();
   if (!deviceId) return redirect("/login");
 
-  const accessToken = getAccessToken();
-  if (!accessToken) return redirect("/login");
+  const accessTokenObj = getAccessToken();
+  if (accessTokenObj === null) return redirect("/login");
 
-  // TODO: check token expiration (access and refresh).
+  const { accessTokenExp } = accessTokenObj;
+  if (accessTokenExp > new Date) return null;
 
-  return accessToken ? null : redirect("/login");
+  const refreshTokenRes = await refreshTokens(deviceId);
+  if (axios.isAxiosError(refreshTokenRes)) {
+    // TODO: check for different error status
+    return redirect("/login");
+  }
+  if (refreshTokenRes instanceof Error)
+    return redirect("/login");
+
+
+  setAccessToken({ accessToken: refreshTokenRes.access_token, accessTokenExp: new Date(Date.now() + 1000 * 600) });
+
+  return null;
 }

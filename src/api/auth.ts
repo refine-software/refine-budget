@@ -6,6 +6,11 @@ type LoginResType = {
     role: string;
 }
 
+type RefreshResType = {
+    access_token: string;
+    role: string;
+}
+
 type LoginReqType = {
     email: string;
     password: string;
@@ -43,5 +48,20 @@ async function login({ email, password, deviceId }: LoginReqType): Promise<Login
         }
     }
 }
-
-export { register, login };
+async function refreshTokens(deviceId: string): Promise<RefreshResType | AxiosError | Error> {
+    try {
+        const res: AxiosResponse = await api.post("auth/refresh", {}, {
+            headers: {
+                "Device-ID": deviceId
+            }
+        })
+        return res.data as RefreshResType;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            return err;
+        } else {
+            return new Error("An unknown error occurred")
+        }
+    }
+}
+export { register, login, refreshTokens };
