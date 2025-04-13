@@ -1,16 +1,13 @@
 import { useContext } from "react";
 import { Location, Outlet, useLocation } from "react-router";
 import Navbar from "../components/navbar/Navbar";
-// import Providers from "../providers";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../store/auth-context";
 
 const Root = () => {
-    // const accessToken = useLoaderData<string | null>();
     const location = useLocation();
     const auth = useContext(AuthContext);
 
     return (
-        // <Providers>
         <div className="relative">
             <header className="bg-primary h-72 absolute top-0 w-full z-10">
                 <h2 className="flex items-center px-10 h-20 text-xl font-medium">{getHeaderTitle(location)}</h2>
@@ -20,7 +17,6 @@ const Root = () => {
             </main>
             {auth.authenticated ? <Navbar /> : <></>}
         </div>
-        // </Providers>
     );
 };
 

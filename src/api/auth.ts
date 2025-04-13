@@ -1,14 +1,15 @@
+import { Role } from "../store/auth-context";
 import api from "./axiosConfig";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 type LoginResType = {
     access_token: string;
-    role: string;
+    role: Role;
 }
 
 type RefreshResType = {
     access_token: string;
-    role: string;
+    role: Role;
 }
 
 type LoginReqType = {

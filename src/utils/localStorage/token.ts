@@ -21,5 +21,4 @@ export function setAccessToken(accessToken: AccessToken): void {
   const exp = accessTokenExp.toLocaleString();
   localStorage.setItem("accessToken", token);
   localStorage.setItem("accessTokenExp", exp);
-
 }

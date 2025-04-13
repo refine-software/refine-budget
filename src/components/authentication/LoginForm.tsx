@@ -8,8 +8,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         const accesToken = getAccessToken();
-        if (accesToken)
-            navigate("/");
+        if (accesToken) navigate("/");
     });
 
     const isSubmitting = navigation.state === "submitting";
@@ -17,8 +16,8 @@ const LoginForm = () => {
     return (
         <Form method="POST" className="flex flex-col gap-10 w-full">
             <div className="flex flex-col gap-6">
-                <input className="border-1 border-primary py-3 px-6 rounded-xl" type="text" name="email" placeholder="Email" />
-                <input className="border-1 border-primary py-3 px-6 rounded-xl" type="password" name="password" placeholder="Password" />
+                <input className="border-1 border-primary py-3 px-6 rounded-xl" required type="text" name="email" placeholder="Email" />
+                <input className="border-1 border-primary py-3 px-6 rounded-xl" required type="password" name="password" placeholder="Password" />
             </div>
 
             <button
@@ -32,4 +31,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default LoginForm;

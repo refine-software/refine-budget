@@ -5,19 +5,22 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { loginAction } from "./pages/actions";
-import { authGuardLoader } from "./pages/loaders";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import AuthContextProvider from "./store/auth-context";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <Error />,
-    id: "root",
     children: [
       {
         index: true,
-        element: <Home />,
-        loader: authGuardLoader,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "login",
@@ -31,11 +34,15 @@ const router = createBrowserRouter([
         errorElement: <Error />,
       },
     ]
-  }
+  },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
+  );
 }
 
 export default App;
