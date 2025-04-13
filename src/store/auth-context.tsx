@@ -66,7 +66,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 
       setLoading(false);
     })();
-  }, [])
+  }, [localStorageRole]);
 
   const login = () => setAuthenticated(true);
   const logout = () => setAuthenticated(false);
