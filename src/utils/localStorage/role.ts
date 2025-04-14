@@ -1,13 +1,19 @@
 import { Role } from "../../store/auth-context";
 
 export function getRole(): Role | null {
-  const role = localStorage.getItem("role") as Role;
+  const role = localStorage.getItem("role");
 
-  if (!role) return null;
+  let ERole: Role;
 
-  return (!role) ? null : role;
+  if (role == "admin") {
+    ERole = Role.admin;
+  } else if (role == "user") {
+    ERole = Role.user;
+  } else return null;
+
+  return ERole;
 }
 
 export function setRole(role: Role) {
-  localStorage.setItem("role", role)
+  localStorage.setItem("role", role.toString());
 }

@@ -4,77 +4,82 @@ import { refreshTokens } from "../api";
 import axios from "axios";
 import { getRole } from "../utils/localStorage/role";
 
-export type Role = "user" | "admin";
-
-export type AuthContextType = {
-  authenticated: boolean;
-  loading: boolean;
-  role: Role;
-  login(): void;
-  logout(): void;
-  setAdmin(): void;
+export enum Role {
+	user,
+	admin,
 }
 
+export type AuthContextType = {
+	authenticated: boolean;
+	loading: boolean;
+	role: Role;
+	login(): void;
+	logout(): void;
+	setAdmin(): void;
+};
+
 export const AuthContext = createContext<AuthContextType>({
-  authenticated: false,
-  loading: true,
-  role: "user",
-  login(): void { },
-  logout(): void { },
-  setAdmin(): void { },
+	authenticated: false,
+	loading: true,
+	role: Role.user,
+	login(): void {},
+	logout(): void {},
+	setAdmin(): void {},
 });
 
 export default function AuthContextProvider({ children }: PropsWithChildren) {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [role, setRole] = useState<Role>("user");
-  const localStorageRole = getRole();
+	const [authenticated, setAuthenticated] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [role, setRole] = useState<Role>(Role.user);
+	const localStorageRole = getRole();
 
-  useEffect(() => {
-    console.log("USE EFFECT RUNNING...");
+	useEffect(() => {
+		console.log("USE EFFECT RUNNING...");
 
-    (async () => {
-      const deviceId = getDeviceId();
-      if (!deviceId) {
-        setAuthenticated(false);
-        setLoading(false);
-        return;
-      }
+		(async () => {
+			const deviceId = getDeviceId();
+			if (!deviceId) {
+				setAuthenticated(false);
+				setLoading(false);
+				return;
+			}
 
-      const tokenObj = getAccessToken();
-      if (tokenObj !== null && tokenObj.accessTokenExp > new Date()) {
-        setAuthenticated(true);
-        setRole(localStorageRole || "user");
-        setLoading(false);
-        return;
-      }
+			const tokenObj = getAccessToken();
+			if (tokenObj !== null && tokenObj.accessTokenExp > new Date()) {
+				setAuthenticated(true);
+				setRole(localStorageRole || Role.user);
+				setLoading(false);
+				return;
+			}
 
-      if (localStorageRole) setRole(localStorageRole)
-      else return;
+			if (localStorageRole) setRole(localStorageRole);
+			else return;
 
-      const res = await refreshTokens(deviceId);
-      if (axios.isAxiosError(res) || res instanceof Error) {
-        setAuthenticated(false);
-      } else {
-        setAccessToken({
-          accessToken: res.access_token,
-          accessTokenExp: new Date(Date.now() + 1000 * 600), // now + 10 Minutes
-        });
-        setRole(res.role);
-        setAuthenticated(true);
-      }
+			const res = await refreshTokens(deviceId);
+			if (axios.isAxiosError(res) || res instanceof Error) {
+				setAuthenticated(false);
+			} else {
+				setAccessToken({
+					accessToken: res.access_token,
+					accessTokenExp: new Date(Date.now() + 1000 * 600), // now + 10 Minutes
+				});
+				setRole(res.role);
+				setAuthenticated(true);
+			}
 
-      setLoading(false);
-    })();
-  }, [localStorageRole]);
+			setLoading(false);
+		})();
+	}, [localStorageRole]);
 
-  const login = () => setAuthenticated(true);
-  const logout = () => setAuthenticated(false);
-  const setAdmin = () => setRole("admin");
+	const login = () => setAuthenticated(true);
+	const logout = () => setAuthenticated(false);
+	const setAdmin = () => setRole(Role.admin);
 
-  return (
-    <AuthContext.Provider value={{ authenticated, loading, role, login, logout, setAdmin }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+	return (
+		<AuthContext.Provider
+			value={{ authenticated, loading, role, login, logout, setAdmin }}
+		>
+			{children}
+		</AuthContext.Provider>
+	);
+}
