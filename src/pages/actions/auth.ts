@@ -1,6 +1,6 @@
 import axios from "axios";
 import { login } from "../../api/auth";
-import { getDeviceId, setDeviceId } from "../../utils";
+import { getDeviceId, setAccessToken, setDeviceId } from "../../utils";
 
 export async function loginAction({ request }: { request: Request }) {
   const data = await request.formData();
@@ -23,4 +23,11 @@ export async function loginAction({ request }: { request: Request }) {
     console.log(res);
     return;
   }
+
+  setAccessToken({
+    accessToken: res.access_token,
+    accessTokenExp: new Date(Date.now() + 1000 * 600),
+  });
+
+  return { success: true, role: res.role };
 }

@@ -1,11 +1,35 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Location, Outlet, useLocation } from "react-router";
 import Navbar from "../components/navbar/Navbar";
 import { AuthContext } from "../store/auth-context";
+import { getAccessToken, getDeviceId, setAccessToken } from "../utils";
+import { refreshTokens } from "../api";
+import axios from "axios";
 
 const Root = () => {
     const location = useLocation();
     const auth = useContext(AuthContext);
+    const deviceId = getDeviceId();
+
+    useEffect(() => {
+        const accessToken = getAccessToken();
+        let interval: ReturnType<typeof setInterval>;
+        if (accessToken && deviceId && accessToken.accessTokenExp > new Date()) {
+            interval = setInterval(async () => {
+                const res = await refreshTokens(deviceId);
+                console.log(res);
+                if (axios.isAxiosError(res) || res instanceof Error) {
+                    throw new Error("Couldn't refresh token");
+                }
+                // TODO: Error handling
+                setAccessToken({ accessToken: res.access_token, accessTokenExp: new Date(Date.now() + 600_000) })
+            }, (accessToken.accessTokenExp.getTime() - Date.now()) - 5000);
+        }
+        return () => {
+            if (interval)
+                clearInterval(interval)
+        }
+    }, [deviceId, auth]);
 
     return (
         <div className="relative">
