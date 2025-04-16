@@ -54,8 +54,8 @@ async function refreshTokens(deviceId: string): Promise<RefreshResType | AxiosEr
         const res: AxiosResponse = await api.post("auth/refresh", {}, {
             headers: {
                 "Device-ID": deviceId
-            }
-        })
+            },
+        });
         return res.data as RefreshResType;
     } catch (err) {
         if (axios.isAxiosError(err)) {
