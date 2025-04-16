@@ -22,9 +22,9 @@ export const AuthContext = createContext<AuthContextType>({
 	authenticated: false,
 	loading: true,
 	role: Role.user,
-	login(): void {},
-	logout(): void {},
-	setAdmin(): void {},
+	login(): void { },
+	logout(): void { },
+	setAdmin(): void { },
 });
 
 export default function AuthContextProvider({ children }: PropsWithChildren) {
@@ -34,8 +34,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	const localStorageRole = getRole();
 
 	useEffect(() => {
-		console.log("USE EFFECT RUNNING...");
-
 		(async () => {
 			const deviceId = getDeviceId();
 			if (!deviceId) {
@@ -53,7 +51,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 			}
 
 			if (localStorageRole) setRole(localStorageRole);
-			else return;
 
 			const res = await refreshTokens(deviceId);
 			if (axios.isAxiosError(res) || res instanceof Error) {
