@@ -1,20 +1,25 @@
-import { useEffect } from "react";
-import { Form, useNavigate, useNavigation } from "react-router"
-import { getAccessToken } from "../../utils";
+import { useContext, useEffect } from "react";
+import { useFetcher, useNavigate, useNavigation } from "react-router"
+import { AuthContext, Role } from "../../store/auth-context";
 
 const LoginForm = () => {
+    const auth = useContext(AuthContext);
     const navigation = useNavigation();
     const navigate = useNavigate();
+    const fetcher = useFetcher<{ success: boolean, role: Role } | undefined>();
 
     useEffect(() => {
-        const accesToken = getAccessToken();
-        if (accesToken) navigate("/");
-    });
+        if (fetcher.data?.success) {
+            auth.login();
+            if (fetcher.data.role === Role.admin) auth.setAdmin();
+            navigate("/");
+        }
+    }, [auth, navigate, fetcher.data]);
 
     const isSubmitting = navigation.state === "submitting";
 
     return (
-        <Form method="POST" className="flex flex-col gap-10 w-full">
+        <fetcher.Form method="POST" className="flex flex-col gap-10 w-full">
             <div className="flex flex-col gap-6">
                 <input className="border-1 border-primary py-3 px-6 rounded-xl" required type="text" name="email" placeholder="Email" />
                 <input className="border-1 border-primary py-3 px-6 rounded-xl" required type="password" name="password" placeholder="Password" />
@@ -27,7 +32,7 @@ const LoginForm = () => {
             >
                 {isSubmitting ? "Loading..." : "Login"}
             </button>
-        </Form>
+        </fetcher.Form>
     )
 }
 
