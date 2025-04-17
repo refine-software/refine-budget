@@ -8,7 +8,7 @@ const Login = () => {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     useEffect(() => {
-        if (auth.authenticated)
+        if (auth.authenticated && !auth.loading)
             navigate("/");
     }, [auth, navigate]);
 
