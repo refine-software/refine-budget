@@ -59,9 +59,9 @@ async function refreshTokens(deviceId: string): Promise<RefreshResType | AxiosEr
         return res.data as RefreshResType;
     } catch (err) {
         if (axios.isAxiosError(err)) {
-            return err;
+            return err as AxiosError;
         } else {
-            return new Error("An unknown error occurred")
+            return new Error("An unknown error occurred") as Error;
         }
     }
 }
