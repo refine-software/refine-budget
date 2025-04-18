@@ -6,3 +6,7 @@
 4. Implement the home screen.
 5. Make sure that your application carefully draws screen based on the user Role.
 
+## Bugs
+- Sometimes the front sends refresh request for no reason (investigate this).
+- On initial page load the role isn't set.
+
