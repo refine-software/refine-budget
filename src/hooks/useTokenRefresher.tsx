@@ -7,14 +7,11 @@ const useTokenRefresher = (deviceId: string | null) => {
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const scheduleRefresh = useCallback(async () => {
-        console.log("Schedule Refresh");
         const accessToken = getAccessToken();
         if (!accessToken || !deviceId) return;
 
         const delay = accessToken.accessTokenExp.getTime() - Date.now() - 5000;
         if (delay <= 0) return;
-
-        console.log("will refresh in", delay / 1000, "seconds");
 
         timeoutRef.current = setTimeout(async () => {
             try {
