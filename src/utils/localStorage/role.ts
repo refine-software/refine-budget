@@ -1,4 +1,4 @@
-import { Role } from "../../store/auth-context";
+import { Role } from "../../types";
 
 export function getRole(): Role | null {
   const role = localStorage.getItem("role");

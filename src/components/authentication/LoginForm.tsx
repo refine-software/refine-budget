@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation } from "react-router"
-import { AuthContext, Role } from "../../store/auth-context";
+import { AuthContext } from "../../store/auth-context";
+import { Role } from "../../types";
 
 const LoginForm = () => {
     const auth = useContext(AuthContext);

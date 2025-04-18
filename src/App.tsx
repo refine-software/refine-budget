@@ -6,7 +6,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { loginAction } from "./pages/actions";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import AuthContextProvider from "./store/auth-context";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthContextProvider from "./store/AuthContextProvider";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
 	{
@@ -39,9 +42,11 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<AuthContextProvider>
-			<RouterProvider router={router} />
-		</AuthContextProvider>
+		<QueryClientProvider client={queryClient}>
+			<AuthContextProvider>
+				<RouterProvider router={router} />
+			</AuthContextProvider>
+		</QueryClientProvider>
 	);
 }
 

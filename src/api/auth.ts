@@ -1,22 +1,6 @@
-import { Role } from "../store/auth-context";
+import { LoginReqType, LoginResType, RefreshResType } from "../types";
 import api from "./axiosConfig";
 import axios, { AxiosError, AxiosResponse } from "axios";
-
-type LoginResType = {
-    access_token: string;
-    role: Role;
-}
-
-type RefreshResType = {
-    access_token: string;
-    role: Role;
-}
-
-type LoginReqType = {
-    email: string;
-    password: string;
-    deviceId: string;
-}
 
 async function register(name: string, email: string, password: string, image: string): Promise<number> {
     const res = api.post("auth/register", {
