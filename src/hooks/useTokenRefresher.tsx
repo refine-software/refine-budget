@@ -15,7 +15,6 @@ const useTokenRefresher = (deviceId: string | null) => {
 
         timeoutRef.current = setTimeout(async () => {
             try {
-                console.log("refreshing token");
                 const res = await refreshTokens(deviceId);
                 if (!axios.isAxiosError(res) && !(res instanceof Error)) {
                     setAccessToken({

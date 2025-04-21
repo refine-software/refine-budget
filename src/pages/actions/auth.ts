@@ -19,10 +19,10 @@ export async function loginAction({ request }: { request: Request }) {
   const res = await login({ email, password, deviceId: deviceId });
 
   if (axios.isAxiosError(res)) {
-    console.log(res);
+    console.error(res);
     return;
   } else if (res instanceof Error) {
-    console.log(res);
+    console.error(res);
     return;
   }
 

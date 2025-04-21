@@ -3,7 +3,6 @@ import { AuthContext } from "../../store/auth-context";
 
 const DebtMoney = () => {
     const auth = useContext(AuthContext);
-    console.log(auth);
     return (
         <p className="text-primary text-3xl font-bold">{auth.user.debt} IQD</p>
     )
