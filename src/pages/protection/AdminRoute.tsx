@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from "react";
 import { useNavigate } from "react-router";
-import useAuth from "../hooks/useAuth";
-import { Role } from "../types";
+import useAuth from "../../hooks/useAuth";
+import { Role } from "../../types";
 
 const AdminRoute = ({ children }: PropsWithChildren) => {
     const auth = useAuth();
