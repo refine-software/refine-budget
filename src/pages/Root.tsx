@@ -33,6 +33,12 @@ function getHeaderTitle(location: Location): string {
             return "Login";
         case "/register":
             return "Register";
+        case "/history":
+            return "History"
+        case "/profile":
+            return "Profile"
+        case "/control":
+            return "Control"
         default:
             return "";
     }

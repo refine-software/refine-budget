@@ -1,18 +1,19 @@
 import { useContext, useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation } from "react-router"
 import { AuthContext } from "../../store/auth-context";
-import { Role } from "../../types";
+import { Role, User } from "../../types";
 
 const LoginForm = () => {
     const auth = useContext(AuthContext);
     const navigation = useNavigation();
     const navigate = useNavigate();
-    const fetcher = useFetcher<{ success: boolean, role: Role } | undefined>();
+    const fetcher = useFetcher<{ success: boolean, role: Role, user: User } | undefined>();
 
     useEffect(() => {
         if (fetcher.data?.success) {
             auth.login();
             if (fetcher.data.role === Role.admin) auth.setAdmin();
+            auth.setUserCtx(fetcher.data.user);
             navigate("/");
         }
     }, [auth, navigate, fetcher.data]);

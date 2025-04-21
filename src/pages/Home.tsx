@@ -1,5 +1,4 @@
 import { getBudget } from "../api";
-import { getUserDebt } from "../api/debt";
 import BudgetMoney from "../components/home/BudgetMoney";
 import DebtMoney from "../components/home/DebtMoney";
 
@@ -13,7 +12,7 @@ const Home = () => {
             </div>
             <div className="flex flex-col justify-center items-center gap-5">
                 <p className="text-4xl font-bold">Your Debt</p>
-                <DebtMoney func={getUserDebt} />
+                <DebtMoney />
             </div>
         </div>
     )

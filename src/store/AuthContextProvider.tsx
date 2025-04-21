@@ -1,8 +1,8 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import { Role } from "../types";
+import { Role, User } from "../types";
 import { getRole } from "../utils/localStorage/role";
 import { getAccessToken, getDeviceId, setAccessToken } from "../utils";
-import { refreshTokens } from "../api";
+import { getUser, refreshTokens } from "../api";
 import axios from "axios";
 import { AuthContext } from "./auth-context";
 
@@ -10,6 +10,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [role, setRole] = useState<Role>(Role.user);
+    const [user, setUser] = useState<User>({} as User);
     const localStorageRole = getRole();
 
     useEffect(() => {
@@ -26,7 +27,11 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
             const tokenObj = getAccessToken();
             if (tokenObj !== null && tokenObj.accessTokenExp > new Date()) {
                 setAuthenticated(true);
-                setRole(localStorageRole || Role.user);
+
+                const userRes = await getUser();
+                setRole(localStorageRole || userRes.role || Role.user);
+                setUser(userRes);
+
                 setLoading(false);
                 return;
             }
@@ -41,6 +46,9 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
                 });
                 setRole(res.role);
                 setAuthenticated(true);
+
+                const userRes = await getUser();
+                setUser(userRes);
             }
 
             setLoading(false);
@@ -50,10 +58,11 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
     const login = () => setAuthenticated(true);
     const logout = () => setAuthenticated(false);
     const setAdmin = () => setRole(Role.admin);
+    const setUserCtx = (u: User) => setUser(u);
 
     return (
         <AuthContext.Provider
-            value={{ authenticated, loading, role, login, logout, setAdmin }}
+            value={{ user, authenticated, loading, role, login, logout, setAdmin, setUserCtx }}
         >
             {children}
         </AuthContext.Provider>

@@ -22,18 +22,13 @@ export type Budget = {
     created_at: string;
 }
 
-export type Debt = {
-    debt: number;
-}
-
 export type User = {
-    created_at: string,
-    debt: number,
-    email: string,
-    id: number,
-    image: string,
-    name: string,
-    password_hash: string,
-    role: Role,
-    verified: true
+    id: number;
+    name: string;
+    email: string;
+    role: Role;
+    debt: number;
+    image: string;
+    created_at: string;
+    verified: true;
 };

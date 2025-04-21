@@ -2,6 +2,7 @@ import axios from "axios";
 import { login } from "../../api/auth";
 import { getDeviceId, setAccessToken, setDeviceId } from "../../utils";
 import { setRole } from "../../utils/localStorage/role";
+import { getUser } from "../../api";
 
 export async function loginAction({ request }: { request: Request }) {
   const data = await request.formData();
@@ -31,5 +32,7 @@ export async function loginAction({ request }: { request: Request }) {
   });
   setRole(res.role);
 
-  return { success: true, role: res.role };
+  const userRes = await getUser();
+
+  return { success: true, role: res.role, user: userRes };
 }

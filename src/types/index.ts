@@ -1,3 +1,5 @@
+import { User } from "./apiTypes";
+
 export * from "./apiTypes";
 
 export enum Role {
@@ -6,10 +8,12 @@ export enum Role {
 }
 
 export type AuthContextType = {
+    user: User;
     authenticated: boolean;
     loading: boolean;
     role: Role;
     login(): void;
     logout(): void;
     setAdmin(): void;
+    setUserCtx(u: User): void;
 };

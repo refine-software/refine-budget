@@ -7,7 +7,7 @@ export async function getBudget(): Promise<Budget> {
     try {
         const accTokenObj = getAccessToken();
         if (accTokenObj === null) throw new Error("you're not authorized");
-        const res = await api.get("/budget", {
+        const res = await api.get("budget", {
             headers: {
                 Authorization: accTokenObj.accessToken,
             }
