@@ -6,12 +6,13 @@ const Home = () => {
 
     return (
         <div className="h-full mt-12 flex flex-col justify-center items-center gap-12 text-center">
-            <div className="flex flex-col justify-center items-center gap-5">
-                <p className="text-4xl font-bold">Our Budget</p>
+            <p className="text-primary text-4xl font-bold">Team Budget</p>
+            <div className="py-4 rounded-2xl w-full flex flex-col justify-center items-center gap-5 bg-[#373737]">
+                <p className="text-3xl font-bold">Our Budget</p>
                 <BudgetMoney func={getBudget} />
             </div>
-            <div className="flex flex-col justify-center items-center gap-5">
-                <p className="text-4xl font-bold">Your Debt</p>
+            <div className="py-4 rounded-2xl w-full flex flex-col justify-center items-center gap-5 bg-[#373737]">
+                <p className="text-3xl font-bold">Your Debt</p>
                 <DebtMoney />
             </div>
         </div>
