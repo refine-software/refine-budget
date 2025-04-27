@@ -24,7 +24,7 @@ const Card = ({ transaction }: { transaction: Transaction }) => {
 
 
     return (
-        <div className={`min-h-52 bg-card-bg rounded-3xl my-5 p-5 flex flex-col gap-6 shadow-xl transition-all duration-300`} key={transaction.id}>
+        <div className={`min-h-56 bg-card-bg rounded-3xl my-5 p-5 flex flex-col gap-5 shadow-xl transition-all duration-300`} key={transaction.id}>
             <div className={`capitalize text-2xl font-bold ${isDeposit ? "text-green" : "text-red"}`}>
                 {transaction.transaction_type}
             </div>
