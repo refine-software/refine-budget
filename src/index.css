@@ -1,8 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 
-@theme {  
+@theme {
     --color-dark: #232323;
     --color-primary: #F0841E;
+    --color-card-bg: #2A2A2A;
+    --color-green: #04FF00;
+    --color-red: #FF0000;
+    --color-white-50: rgba(255, 255, 255, 0.50);
+    --color-white-75: rgba(255, 255, 255, 0.75);
     --spacing-container: calc(100dvh - 80px);
 }
 
@@ -10,4 +16,5 @@ body {
     background-color: var(--color-bg-dark);
     color: #fff;
     font-size: 1.1rem;
+    font-family: "Roboto", sans-serif;
 }
