@@ -32,3 +32,50 @@ export type User = {
     created_at: string;
     verified: true;
 };
+
+export enum SortTypes {
+    dateAsc = "date_asc",
+    dateDesc = "date_desc",
+    amountAsc = "amount_asc",
+    amountDesc = "amount_desc"
+}
+
+export enum TransactionTypes {
+    deposit = "deposit",
+    withdrawal = "withdrawal",
+}
+
+export enum DepositTypes {
+    subscription = "subscription",
+    donation = "donation",
+    income = "income",
+    other = "other",
+}
+
+export type TransactionsReqQueries = {
+    page: number;
+    limit: number;
+    sort: SortTypes;
+    transactionType?: TransactionTypes;
+    depositTypes?: DepositTypes[];
+};
+
+export type Transaction = {
+    id: number;
+    amount: number;
+    made_by: string;
+    transaction_date: string;
+    transaction_type: TransactionTypes;
+    description: string;
+    deposit_type: {
+        deposit_type: string;
+        valid: boolean;
+    };
+    subscriber_id: string | null;
+    subscriber: string | null;
+};
+
+export type TransactionsRes = {
+    num_of_pages: number;
+    transactions: Transaction[];
+}
