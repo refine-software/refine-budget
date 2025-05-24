@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { loginAction } from "./pages/actions";
+import { loginAction, registerAction } from "./pages/actions";
 import Root from "./pages/Root";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
@@ -62,6 +62,7 @@ const router = createBrowserRouter([
 				path: "register",
 				element: <Register />,
 				errorElement: <Error />,
+				action: registerAction,
 			},
 		],
 	},

@@ -1,8 +1,34 @@
 import axios from "axios";
-import { login } from "../../api/auth";
+import { login, register } from "../../api/auth";
 import { getDeviceId, setAccessToken, setDeviceId } from "../../utils";
 import { setRole } from "../../utils/localStorage/role";
 import { getUser } from "../../api";
+import { RegisterReq } from "../../types";
+
+export async function registerAction({ request }: { request: Request }) {
+  const data = await request.formData();
+
+  const image = data.get("image");
+  const file = image instanceof File && image.size > 0 ? image : null;
+
+  const requestData: RegisterReq = {
+    name: data.get("name") as string,
+    email: data.get("email") as string,
+    password: data.get("password") as string,
+    image: file,
+  };
+
+  const res = await register(requestData);
+  if (axios.isAxiosError(res)) {
+    console.error(res);
+    return res.status;
+  } else if (res instanceof Error) {
+    console.error(res);
+    return;
+  }
+
+  return { success: true, status: res };
+}
 
 export async function loginAction({ request }: { request: Request }) {
   const data = await request.formData();

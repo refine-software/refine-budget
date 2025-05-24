@@ -1,11 +1,15 @@
 import { Role } from ".";
 
-export type LoginResType = {
-    access_token: string;
-    role: Role;
+// Register
+export type RegisterReq = {
+    image: File | null;
+    name: string;
+    email: string;
+    password: string;
 }
 
-export type RefreshResType = {
+// Login
+export type LoginResType = {
     access_token: string;
     role: Role;
 }
@@ -14,6 +18,12 @@ export type LoginReqType = {
     email: string;
     password: string;
     deviceId: string;
+}
+
+// refresh tokens
+export type RefreshResType = {
+    access_token: string;
+    role: Role;
 }
 
 export type Budget = {

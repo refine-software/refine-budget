@@ -1,17 +1,30 @@
-import { LoginReqType, LoginResType, RefreshResType } from "../types";
+import { LoginReqType, LoginResType, RefreshResType, RegisterReq } from "../types";
 import api from "./axiosConfig";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-async function register(name: string, email: string, password: string, image: string): Promise<number> {
-    const res = api.post("auth/register", {
-        name,
-        email,
-        password,
-        image
-    });
+async function register(formData: RegisterReq): Promise<number | AxiosError | Error> {
+    try {
+        const data = new FormData();
+        data.append("name", formData.name);
+        data.append("email", formData.email);
+        data.append("password", formData.password);
+        if (formData.image) {
+            data.append("image", formData.image);
+        }
 
-    const status = (await res).status;
-    return status;
+        const res = await api.post("auth/register", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return res.status;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            return err;
+        } else {
+            return new Error("An unknown error occurred");
+        }
+    }
 }
 
 async function login({ email, password, deviceId }: LoginReqType): Promise<LoginResType | AxiosError | Error> {
