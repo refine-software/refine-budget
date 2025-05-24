@@ -9,4 +9,4 @@
 ## Bugs
 - Sometimes the front sends refresh request for no reason (investigate this).
 - On initial page load the role isn't set.
-
+- Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
