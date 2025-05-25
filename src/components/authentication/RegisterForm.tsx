@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
-import { useFetcher, useNavigate, useNavigation } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useFetcher, useNavigate } from "react-router";
+import { RegisterContext } from "../../store/register-context";
+import { AxiosError } from "axios";
 
 const RegisterForm = () => {
-    const navigation = useNavigation();
     const navigate = useNavigate();
-    const fetcher = useFetcher<number | undefined>();
+    const fetcher = useFetcher<{ success: boolean, status: number | null, err: AxiosError | Error } | undefined>();
+    const { setEmail } = useContext(RegisterContext);
+
     const [preview, setPreview] = useState<string>("/choose-image.svg");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [submittedEmail, setSubmittedEmail] = useState("");
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -28,27 +32,34 @@ const RegisterForm = () => {
         };
     }, [preview]);
 
+    useEffect(() => {
+        if ((fetcher.state === "idle" && fetcher.data?.success && submittedEmail) || (fetcher.data?.status === 409 && submittedEmail)) {
+            setEmail(submittedEmail);
+            navigate("/register/verify");
+        }
+    }, [fetcher.state, fetcher.data, submittedEmail, setEmail, navigate]);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        const form = e.currentTarget;
+        const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            setPasswordError("Passwords do not match");
+        } else {
+            setPasswordError("");
+            setSubmittedEmail(email);
+        }
+    };
+
     let errorMessage = "";
-    if (fetcher.data === 400) {
-        errorMessage = "Invalid user data or image upload.";
-    } else if (fetcher.data === 403) {
-        errorMessage = "Registration forbidden. This email is not allowed.";
-    } else if (fetcher.data === 409) {
-        errorMessage = "This email is already registered.";
-    } else if (fetcher.data === 500) {
-        errorMessage = "Internal server error. Please try again later.";
-    }
+    if (fetcher.data?.status === 400) errorMessage = "Invalid user data or image upload.";
+    else if (fetcher.data?.status === 403) errorMessage = "Registration forbidden. This email is not allowed.";
+    else if (fetcher.data?.status === 500) errorMessage = "Internal server error. Please try again later.";
 
     return (
         <fetcher.Form method="POST" encType="multipart/form-data" className="flex flex-col justify-center items-center gap-10 py-12"
-            onSubmit={(e) => {
-                if (password !== confirmPassword) {
-                    e.preventDefault();
-                    setPasswordError("Passwords do not match");
-                } else {
-                    setPasswordError("");
-                }
-            }}
+            onSubmit={handleSubmit}
         >
             {errorMessage && (
                 <div className="text-red-600 text-center font-medium">

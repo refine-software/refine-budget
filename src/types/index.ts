@@ -17,3 +17,8 @@ export type AuthContextType = {
     setAdmin(): void;
     setUserCtx(u: User): void;
 };
+
+export type RegisterContextType = {
+    email: string;
+    setEmail: (email: string) => void;
+};

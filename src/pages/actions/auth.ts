@@ -20,14 +20,12 @@ export async function registerAction({ request }: { request: Request }) {
 
   const res = await register(requestData);
   if (axios.isAxiosError(res)) {
-    console.error(res);
-    return res.status;
+    return { success: false, status: res.status, err: res };
   } else if (res instanceof Error) {
-    console.error(res);
-    return;
+    return { success: false, status: null, err: res };
   }
 
-  return { success: true, status: res };
+  return { success: true, status: res, err: null };
 }
 
 export async function loginAction({ request }: { request: Request }) {
@@ -39,8 +37,7 @@ export async function loginAction({ request }: { request: Request }) {
   if (deviceId === null) setDeviceId();
 
   deviceId = getDeviceId();
-  if (deviceId === null)
-    throw new Error("Cannot get deviceId");
+  if (deviceId === null) throw new Error("Cannot get deviceId");
 
   const res = await login({ email, password, deviceId: deviceId });
 

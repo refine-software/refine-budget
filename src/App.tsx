@@ -11,6 +11,8 @@ import AuthContextProvider from "./store/AuthContextProvider";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
 import Control from "./pages/Control";
+import VerifyOtp from "./pages/VerifyOtp";
+import { RegisterProvider } from "./store/RegisterContextProvider";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +66,11 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 				action: registerAction,
 			},
+			{
+				path: "register/verify",
+				element: <VerifyOtp />,
+				errorElement: <Error />,
+			},
 		],
 	},
 ]);
@@ -72,7 +79,9 @@ function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthContextProvider>
-				<RouterProvider router={router} />
+				<RegisterProvider>
+					<RouterProvider router={router} />
+				</RegisterProvider>
 			</AuthContextProvider>
 		</QueryClientProvider>
 	);

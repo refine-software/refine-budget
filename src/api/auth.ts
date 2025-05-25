@@ -27,6 +27,38 @@ async function register(formData: RegisterReq): Promise<number | AxiosError | Er
     }
 }
 
+async function resendVerificationCode(email: string): Promise<number | AxiosError | Error> {
+    try {
+        const res = await api.post("auth/resend-verification-email", {
+            "email": email,
+        });
+
+        return res.status;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            return err;
+        } else {
+            return new Error("An unknown error occurred");
+        }
+    }
+}
+
+async function verifyAccount(email: string, otp: string): Promise<number | AxiosError | Error> {
+    try {
+        const res = await api.post("auth/verify-account", {
+            "email": email,
+            "otp": otp,
+        });
+        return res.status;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            return err;
+        } else {
+            return new Error("An unknown error occurred");
+        }
+    }
+}
+
 async function login({ email, password, deviceId }: LoginReqType): Promise<LoginResType | AxiosError | Error> {
     try {
         const res: AxiosResponse = await api.post("auth/login", {
@@ -46,6 +78,7 @@ async function login({ email, password, deviceId }: LoginReqType): Promise<Login
         }
     }
 }
+
 async function refreshTokens(deviceId: string): Promise<RefreshResType | AxiosError | Error> {
     try {
         const res: AxiosResponse = await api.post("auth/refresh", {}, {
@@ -62,4 +95,5 @@ async function refreshTokens(deviceId: string): Promise<RefreshResType | AxiosEr
         }
     }
 }
-export { register, login, refreshTokens };
+
+export { register, resendVerificationCode, verifyAccount, login, refreshTokens };
