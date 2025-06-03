@@ -5,14 +5,14 @@ import useAuth from "../../hooks/useAuth";
 type ProtectedRouteProps = PropsWithChildren;
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const auth = useAuth();
-  const navigate = useNavigate();
+	const auth = useAuth();
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!auth.authenticated && !auth.loading) navigate("/login");
-  }, [navigate, auth]);
+	useEffect(() => {
+		if (!auth.authenticated && !auth.loading) navigate("/login");
+	}, [navigate, auth]);
 
-  return children;
+	return children;
 };
 
 export default ProtectedRoute;
