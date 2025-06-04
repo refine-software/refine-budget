@@ -13,6 +13,9 @@ import Profile from "./pages/Profile";
 import Control from "./pages/Control";
 import VerifyOtp from "./pages/VerifyOtp";
 import { RegisterProvider } from "./store/RegisterContextProvider";
+import Users from "./pages/adminUsers";
+import Transactions from "./pages/adminTransactions";
+import ManageEmails from "./pages/adminManageEmails";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +54,30 @@ const router = createBrowserRouter([
 				element: (
 					<ProtectedRoute>
 						<Control />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "users",
+				element: (
+					<ProtectedRoute>
+						<Users />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "transactions",
+				element: (
+					<ProtectedRoute>
+						<Transactions />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "manage-emails",
+				element: (
+					<ProtectedRoute>
+						<ManageEmails />
 					</ProtectedRoute>
 				),
 			},

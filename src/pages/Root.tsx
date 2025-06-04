@@ -4,6 +4,8 @@ import Navbar from "../components/navbar/Navbar";
 import { AuthContext } from "../store/auth-context";
 import useTokenRefresher from "../hooks/useTokenRefresher";
 import { getDeviceId } from "../utils";
+import { NavLink } from "react-router";
+import LeftArrow from "../../public/Vector.svg";
 
 const Root = () => {
 	const location = useLocation();
@@ -26,7 +28,10 @@ const Root = () => {
 	);
 };
 
-function getHeaderTitle(location: Location, username: string): string {
+function getHeaderTitle(
+	location: Location,
+	username: string
+): string | JSX.Element {
 	switch (location.pathname) {
 		case "/":
 			return "Sup " + username;
@@ -40,6 +45,33 @@ function getHeaderTitle(location: Location, username: string): string {
 			return "Profile";
 		case "/control":
 			return "Control";
+		case "/users":
+			return (
+				<div className="flex items-center">
+					<NavLink to="/control" className="absolute left-4">
+						<img src={LeftArrow} alt="going back icon" />
+					</NavLink>{" "}
+					Users
+				</div>
+			);
+		case "/transactions":
+			return (
+				<div className="flex items-center">
+					<NavLink to="/control" className="absolute left-4">
+						<img src={LeftArrow} alt="going back icon" />
+					</NavLink>{" "}
+					Transactions
+				</div>
+			);
+		case "/manage-emails":
+			return (
+				<div className="flex items-center">
+					<NavLink to="/control" className="absolute left-4">
+						<img src={LeftArrow} alt="going back icon" />
+					</NavLink>{" "}
+					Manage Emails
+				</div>
+			);
 		default:
 			return "";
 	}

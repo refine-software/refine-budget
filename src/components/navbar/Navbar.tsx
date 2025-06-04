@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 import { Role } from "../../types";
+import { Location, Outlet } from "react-router";
 
 const Navbar = () => {
 	const { role } = useContext(AuthContext);
@@ -47,17 +48,38 @@ const Navbar = () => {
 					)}
 				</NavLink>
 				{isAdmin && (
-					<NavLink to={"/control"}>
-						{({ isActive }) => (
-							<img
-								src={
-									isActive
-										? "/public/control-active.svg"
-										: "/public/control.svg"
-								}
-								alt="Home"
-							/>
-						)}
+					<NavLink
+						to={"/control"}
+						className={({ isActive }) => {
+							const location = useLocation();
+							return isActive ||
+								[
+									"/users",
+									"/transactions",
+									"/manage-emails",
+								].includes(location.pathname)
+								? "active-class"
+								: "";
+						}}
+					>
+						{({ isActive }) => {
+							const location = useLocation();
+							return (
+								<img
+									src={
+										isActive ||
+										[
+											"/users",
+											"/transactions",
+											"/manage-emails",
+										].includes(location.pathname)
+											? "/public/control-active.svg"
+											: "/public/control.svg"
+									}
+									alt="Control"
+								/>
+							);
+						}}
 					</NavLink>
 				)}
 			</div>
