@@ -16,6 +16,10 @@ import { RegisterProvider } from "./store/RegisterContextProvider";
 import Users from "./pages/adminUsers";
 import Transactions from "./pages/adminTransactions";
 import ManageEmails from "./pages/adminManageEmails";
+import { AuthContext } from "./store/auth-context";
+import { Role } from "./types";
+import { useContext } from "react";
+import AdminRoute from "./pages/protection/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -52,33 +56,33 @@ const router = createBrowserRouter([
 			{
 				path: "control",
 				element: (
-					<ProtectedRoute>
+					<AdminRoute>
 						<Control />
-					</ProtectedRoute>
+					</AdminRoute>
 				),
 			},
 			{
 				path: "users",
 				element: (
-					<ProtectedRoute>
+					<AdminRoute>
 						<Users />
-					</ProtectedRoute>
+					</AdminRoute>
 				),
 			},
 			{
 				path: "transactions",
 				element: (
-					<ProtectedRoute>
+					<AdminRoute>
 						<Transactions />
-					</ProtectedRoute>
+					</AdminRoute>
 				),
 			},
 			{
 				path: "manage-emails",
 				element: (
-					<ProtectedRoute>
+					<AdminRoute>
 						<ManageEmails />
-					</ProtectedRoute>
+					</AdminRoute>
 				),
 			},
 			{
@@ -103,6 +107,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+	const { role } = useContext(AuthContext);
+	const isAdmin = role === Role.admin;
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthContextProvider>
