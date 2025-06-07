@@ -10,7 +10,7 @@ const getUser = async (): Promise<User | AxiosError | Error> => {
 
 		const res = await api.get("user", {
 			headers: {
-				Authorization: accTokenObj.accessToken,
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
 			},
 		});
 		return res.data as User;
@@ -34,7 +34,7 @@ const updateUsername = async (name: string): Promise<User | Error> => {
 			"/user/name",
 			{ name },
 			{
-				headers: { Authorization: accTokenObj.accessToken },
+				headers: { Authorization: `Bearer ${accTokenObj.accessToken}` },
 			}
 		);
 		return res.data as User;
@@ -63,7 +63,7 @@ const updateProfileImage = async (file: File): Promise<User | Error> => {
 
 		const res = await api.patch("/user/image", formData, {
 			headers: {
-				Authorization: accTokenObj.accessToken,
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
 				"Content-Type": "multipart/form-data",
 			},
 		});
@@ -90,7 +90,7 @@ const logoutUser = async (): Promise<string | Error> => {
 		if (!accTokenObj) throw new Error("Unauthorized");
 
 		await api.post("/user/logout", null, {
-			headers: { Authorization: accTokenObj.accessToken },
+			headers: { Authorization: `Bearer ${accTokenObj.accessToken}` },
 		});
 		return "User logged out successfully.";
 	} catch (err) {
