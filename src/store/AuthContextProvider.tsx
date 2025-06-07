@@ -27,7 +27,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 			const tokenObj = getAccessToken();
 			if (tokenObj !== null && tokenObj.accessTokenExp > new Date()) {
 				setAuthenticated(true);
-				console.log("working");
 				const userRes = await getUser();
 				if (axios.isAxiosError(userRes)) {
 					console.error(userRes);
@@ -42,7 +41,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 				return;
 			}
 
-			const res = await refreshTokens(deviceId);
+			const res = await refreshTokens();
 			if (axios.isAxiosError(res) || res instanceof Error) {
 				setAuthenticated(false);
 			} else {
@@ -68,7 +67,15 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	}, [localStorageRole]);
 
 	const login = () => setAuthenticated(true);
-	const logout = () => setAuthenticated(false);
+	const logout = () => {
+		setAuthenticated(false);
+		setRole(Role.user);
+		setUser({} as User);
+		localStorage.removeItem("role");
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("accessTokenExp");
+		localStorage.removeItem("deviceId");
+	};
 	const setAdmin = () => setRole(Role.admin);
 	const setUserCtx = (u: User) => setUser(u);
 

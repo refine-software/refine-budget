@@ -1,17 +1,15 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Location, Outlet, useLocation } from "react-router";
 import Navbar from "../components/navbar/Navbar";
 import { AuthContext } from "../store/auth-context";
 import useTokenRefresher from "../hooks/useTokenRefresher";
-import { getDeviceId } from "../utils";
 import { NavLink } from "react-router";
 import LeftArrow from "../../public/Vector.svg";
 
 const Root = () => {
 	const location = useLocation();
 	const auth = useContext(AuthContext);
-	const deviceId = getDeviceId();
-	useTokenRefresher(deviceId);
+	useTokenRefresher();
 
 	return (
 		<div className="relative">
@@ -31,7 +29,7 @@ const Root = () => {
 function getHeaderTitle(
 	location: Location,
 	username: string
-): string | JSX.Element {
+): string | React.ReactElement {
 	switch (location.pathname) {
 		case "/":
 			return "Sup " + username;
@@ -50,7 +48,7 @@ function getHeaderTitle(
 				<div className="flex items-center">
 					<NavLink to="/control" className="absolute left-4">
 						<img src={LeftArrow} alt="going back icon" />
-					</NavLink>{" "}
+					</NavLink>
 					Users
 				</div>
 			);
@@ -59,7 +57,7 @@ function getHeaderTitle(
 				<div className="flex items-center">
 					<NavLink to="/control" className="absolute left-4">
 						<img src={LeftArrow} alt="going back icon" />
-					</NavLink>{" "}
+					</NavLink>
 					Transactions
 				</div>
 			);
@@ -68,7 +66,7 @@ function getHeaderTitle(
 				<div className="flex items-center">
 					<NavLink to="/control" className="absolute left-4">
 						<img src={LeftArrow} alt="going back icon" />
-					</NavLink>{" "}
+					</NavLink>
 					Manage Emails
 				</div>
 			);
