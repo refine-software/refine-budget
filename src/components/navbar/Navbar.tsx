@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { NavLink, useLocation } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 import { Role } from "../../types";
-import { Location, Outlet } from "react-router";
 
 const Navbar = () => {
 	const { role } = useContext(AuthContext);
