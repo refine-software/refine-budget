@@ -17,12 +17,15 @@ const History = () => {
 	});
 	let body;
 
+	console.log("History page transactions", data);
 	if (isPending) {
 		body = <span>Loading...</span>;
 	} else if (isError) {
 		body = <span>Error: {(error as Error).message}</span>;
 	} else if (data) {
 		body = <Cards transactions={data.transactions} />;
+	} else {
+		body = <p className="text-center text-2xl">No transactions found.</p>;
 	}
 	return <div className="mb-20">{body}</div>;
 };

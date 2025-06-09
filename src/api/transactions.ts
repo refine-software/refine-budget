@@ -36,10 +36,6 @@ export async function getTransactions(
 				Authorization: `Bearer ${accTokenObj.accessToken}`,
 			},
 		});
-
-		if (!res.data || typeof res.data !== "object") {
-			throw new Error("there are no transactions yet");
-		}
 		return res.data as TransactionsRes;
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
