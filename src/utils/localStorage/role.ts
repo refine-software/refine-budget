@@ -1,19 +1,19 @@
 import { Role } from "../../types";
 
 export function getRole(): Role | null {
-  const role = localStorage.getItem("role");
+	const role = localStorage.getItem("role");
 
-  let ERole: Role;
+	let ERole: Role;
 
-  if (role == "admin") {
-    ERole = Role.admin;
-  } else if (role == "user") {
-    ERole = Role.user;
-  } else return null;
+	if (role == "admin") {
+		ERole = Role.ADMIN;
+	} else if (role == "user") {
+		ERole = Role.USER;
+	} else return null;
 
-  return ERole;
+	return ERole;
 }
 
 export function setRole(role: Role) {
-  localStorage.setItem("role", role.toString());
+	localStorage.setItem("role", role.toString());
 }
