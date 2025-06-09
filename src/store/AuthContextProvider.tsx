@@ -9,7 +9,7 @@ import { AuthContext } from "./auth-context";
 export default function AuthContextProvider({ children }: PropsWithChildren) {
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
-	const [role, setRole] = useState<Role>(Role.user);
+	const [role, setRole] = useState<Role>(Role.USER);
 	const [user, setUser] = useState<User>({} as User);
 	const localStorageRole = getRole();
 
@@ -33,7 +33,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 				} else if (userRes instanceof Error) {
 					console.error(userRes);
 				} else {
-					setRole(localStorageRole || userRes.role || Role.user);
+					setRole(localStorageRole || userRes.role || Role.USER);
 					setUser(userRes);
 				}
 
@@ -69,15 +69,18 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	const login = () => setAuthenticated(true);
 	const logout = () => {
 		setAuthenticated(false);
-		setRole(Role.user);
+		setRole(Role.USER);
 		setUser({} as User);
 		localStorage.removeItem("role");
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("accessTokenExp");
 		localStorage.removeItem("deviceId");
 	};
-	const setAdmin = () => setRole(Role.admin);
-	const setUserCtx = (u: User) => setUser(u);
+	const setAdmin = () => setRole(Role.ADMIN);
+	const setUserCtx = (u: User) => {
+		console.log("Setting user in context:", u);
+		setUser(u);
+	};
 
 	return (
 		<AuthContext.Provider

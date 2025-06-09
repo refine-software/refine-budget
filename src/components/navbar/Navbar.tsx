@@ -5,7 +5,7 @@ import { Role } from "../../types";
 
 const Navbar = () => {
 	const { role } = useContext(AuthContext);
-	const isAdmin = role === Role.admin;
+	const isAdmin = role === Role.ADMIN;
 
 	return (
 		<nav className="bg-primary fixed w-full overflow-hidden bottom-0 z-50 ">
