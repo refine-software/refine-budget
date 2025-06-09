@@ -18,7 +18,7 @@ const Root = () => {
 					{getHeaderTitle(location, auth.user.name)}
 				</h2>
 			</header>
-			<main className="min-h-container absolute top-20 w-full z-20 bg-dark py-10 px-8">
+			<main className="min-h-container absolute top-20 w-full z-20 bg-dark py-10 px-6">
 				<Outlet />
 			</main>
 			{auth.authenticated ? <Navbar /> : <></>}

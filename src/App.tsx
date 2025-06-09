@@ -108,7 +108,7 @@ const router = createBrowserRouter([
 
 function App() {
 	const { role } = useContext(AuthContext);
-	const isAdmin = role === Role.admin;
+	const isAdmin = role === Role.ADMIN;
 
 	return (
 		<QueryClientProvider client={queryClient}>
