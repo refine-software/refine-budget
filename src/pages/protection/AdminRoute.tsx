@@ -4,15 +4,15 @@ import useAuth from "../../hooks/useAuth";
 import { Role } from "../../types";
 
 const AdminRoute = ({ children }: PropsWithChildren) => {
-    const auth = useAuth();
-    const navigate = useNavigate();
+	const auth = useAuth();
+	const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!auth.authenticated && !auth.loading) navigate("/login");
-        if (auth.role !== Role.admin) navigate("/");
-    }, [navigate, auth]);
+	useEffect(() => {
+		if (!auth.authenticated && !auth.loading) navigate("/login");
+		if (auth.role !== Role.ADMIN) navigate("/");
+	}, [navigate, auth]);
 
-    return children;
+	return children;
 };
 
 export default AdminRoute;
