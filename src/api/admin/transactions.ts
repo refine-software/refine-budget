@@ -1,29 +1,18 @@
 import api from "../axiosConfig";
 import { getAccessToken } from "../../utils";
+import { DepositReq } from "../../types";
 
 export const depositTransaction = async (
-	amount: number,
-	depositType: string,
-	details: string,
-	subscriberId: number
+	depositReq: DepositReq
 ): Promise<number | Error> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (accTokenObj === null) throw new Error("you're not authorized");
-		const res = await api.post(
-			"/admin/transaction/deposit",
-			{
-				amount,
-				deposit_type: depositType,
-				details,
-				subscriber_id: subscriberId,
+		const res = await api.post("/admin/transaction/deposit", depositReq, {
+			headers: {
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
 			},
-			{
-				headers: {
-					Authorization: `Bearer ${accTokenObj.accessToken}`,
-				},
-			}
-		);
+		});
 		return res.status;
 	} catch (err) {
 		console.error("Error processing deposit transaction:", err);
