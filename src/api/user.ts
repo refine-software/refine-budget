@@ -7,7 +7,6 @@ const getUser = async (): Promise<User | AxiosError | Error> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
-
 		const res = await api.get("user", {
 			headers: {
 				Authorization: `Bearer ${accTokenObj.accessToken}`,
@@ -25,7 +24,7 @@ const getUser = async (): Promise<User | AxiosError | Error> => {
 	}
 };
 
-const updateUsername = async (name: string): Promise<User | Error> => {
+const updateUsername = async (name: string): Promise<{ name: string }> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
@@ -40,20 +39,20 @@ const updateUsername = async (name: string): Promise<User | Error> => {
 		return res.data as User;
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
-			return new Error(
+			throw new Error(
 				`Failed to update username: ${
 					err.response?.data?.message || err.message
 				}`
 			);
 		} else {
-			return new Error(
+			throw new Error(
 				"An unknown error occurred while updating username."
 			);
 		}
 	}
 };
 
-const updateProfileImage = async (file: File): Promise<User | Error> => {
+const updateProfileImage = async (file: File): Promise<{ image: string }> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
@@ -67,41 +66,41 @@ const updateProfileImage = async (file: File): Promise<User | Error> => {
 				"Content-Type": "multipart/form-data",
 			},
 		});
-		return res.data as User;
+		return res.data as { image: string };
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
 			console.error("Error response:", err.response?.data);
-			return new Error(
+			throw new Error(
 				`Failed to update profile image: ${
 					err.response?.data?.message || err.message
 				}`
 			);
 		} else {
-			return new Error(
+			throw new Error(
 				"An unknown error occurred while updating profile image."
 			);
 		}
 	}
 };
 
-const logoutUser = async (): Promise<string | Error> => {
+const logoutUser = async (): Promise<number> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
 
-		await api.post("/user/logout", null, {
+		const res = await api.post("/user/logout", null, {
 			headers: { Authorization: `Bearer ${accTokenObj.accessToken}` },
 		});
-		return "User logged out successfully.";
+		return res.status;
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
-			return new Error(
+			throw new Error(
 				`Failed to log out: ${
 					err.response?.data?.message || err.message
 				}`
 			);
 		} else {
-			return new Error("An unknown error occurred while logging out.");
+			throw new Error("An unknown error occurred while logging out.");
 		}
 	}
 };
