@@ -23,25 +23,20 @@ export const depositTransaction = async (
 export const withdrawTransaction = async (
 	amount: number,
 	details: string
-): Promise<number | Error> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (accTokenObj === null) throw new Error("you're not authorized");
-		const res = await api.post(
-			"/admin/transaction/withdrawal",
-			{
-				amount,
-				details,
+): Promise<number> => {
+	const accTokenObj = getAccessToken();
+	if (accTokenObj === null) throw new Error("you're not authorized");
+	const res = await api.post(
+		"/admin/transaction/withdrawal",
+		{
+			amount,
+			details,
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
 			},
-			{
-				headers: {
-					Authorization: `Bearer ${accTokenObj.accessToken}`,
-				},
-			}
-		);
-		return res.status;
-	} catch (err) {
-		console.error("Error processing withdrawal transaction:", err);
-		return new Error("Failed to process withdrawal transaction.");
-	}
+		}
+	);
+	return res.status;
 };

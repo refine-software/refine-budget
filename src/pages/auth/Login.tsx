@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import LoginForm from "../components/authentication/LoginForm";
-import AuthNav from "../components/navbar/AuthNav";
-import { AuthContext } from "../store/auth-context";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../../store/auth-context";
+import LoginForm from "../../components/authentication/LoginForm";
+import AuthNav from "../../components/navbar/AuthNav";
 
 const Login = () => {
     const auth = useContext(AuthContext);

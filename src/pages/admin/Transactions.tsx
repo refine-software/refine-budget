@@ -1,11 +1,9 @@
 import { useState } from "react";
-import {
-	withdrawTransaction,
-	depositTransaction,
-} from "../api/admin/transactions";
-import { getAdminUsers } from "../api/admin/users";
 import { useQuery } from "@tanstack/react-query";
-import { DepositTypes, TransactionTypes } from "../types";
+import { DepositTypes, TransactionTypes } from "../../types";
+import { getAdminUsers } from "../../api/admin/users";
+import { depositTransaction, withdrawTransaction } from "../../api/admin/transactions";
+import axios from "axios";
 
 const Transactions = () => {
 	const [formType, setFormType] = useState<TransactionTypes>(
@@ -24,47 +22,39 @@ const Transactions = () => {
 	const [depositDetails, setDepositDetails] = useState("");
 	const [subscriberId, setSubscriberId] = useState(0);
 	const { data: users = [], isError } = useQuery({
-		queryKey: ["Users"],
+		queryKey: ["users"],
 		queryFn: getAdminUsers,
 	});
 
 	const handleWithdrawSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await withdrawTransaction(
+			await withdrawTransaction(
 				parseFloat(withdrawAmount),
 				withdrawDescription
 			);
-			if (response instanceof Error) {
-				setErrorMessage(response.message);
-			} else {
-				setWithdrawAmount("");
-				setWithdrawDescription("");
-			}
-		} catch (error) {
-			setErrorMessage("An unexpected error occurred.");
+			setWithdrawAmount("");
+			setWithdrawDescription("");
+		} catch (err) {
+			setErrorMessage(`Failed to process transaction:${err}`)
 		}
 	};
 
 	const handleDepositSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await depositTransaction({
+			await depositTransaction({
 				amount: depositAmount,
 				deposit_type: depositType,
 				details: depositDetails,
 				subscriber_id: subscriberId || undefined, // Use undefined if no subscriber is selected
 			});
-			if (response instanceof Error) {
-				setErrorMessage(response.message);
-			} else {
-				setDepositAmount(0);
-				setDepositType(DepositTypes.subscription);
-				setDepositDetails("");
-				setSubscriberId(0);
-			}
-		} catch (error) {
-			setErrorMessage("An unexpected error occurred.");
+			setDepositAmount(0);
+			setDepositType(DepositTypes.subscription);
+			setDepositDetails("");
+			setSubscriberId(0);
+		} catch (err) {
+			setErrorMessage(`Failed to process transaction:${err}`)
 		}
 	};
 

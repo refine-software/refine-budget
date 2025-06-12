@@ -4,22 +4,20 @@ import { loginAction, registerAction } from "./pages/actions";
 import Root from "./pages/Root";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import ProtectedRoute from "./pages/protection/ProtectedRoute";
 import AuthContextProvider from "./store/AuthContextProvider";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
-import Control from "./pages/Control";
-import VerifyOtp from "./pages/VerifyOtp";
+import Control from "./pages/admin/Control";
 import { RegisterProvider } from "./store/RegisterContextProvider";
-import Users from "./pages/adminUsers";
-import Transactions from "./pages/adminTransactions";
-import ManageEmails from "./pages/adminManageEmails";
-import { AuthContext } from "./store/auth-context";
-import { Role } from "./types";
-import { useContext } from "react";
 import AdminRoute from "./pages/protection/AdminRoute";
+import Users from "./pages/admin/Users";
+import Transactions from "./pages/admin/Transactions";
+import ManageEmails from "./pages/admin/ManageEmails";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import VerifyOtp from "./pages/auth/VerifyOtp";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -102,14 +100,21 @@ const router = createBrowserRouter([
 				element: <VerifyOtp />,
 				errorElement: <Error />,
 			},
+			{
+				path: "reset-password",
+				element: <ResetPassword />,
+				children: [
+					{
+						path: "confirm",
+						element: <>confirm</>,
+					}
+				]
+			}
 		],
 	},
 ]);
 
 function App() {
-	const { role } = useContext(AuthContext);
-	const isAdmin = role === Role.ADMIN;
-
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthContextProvider>

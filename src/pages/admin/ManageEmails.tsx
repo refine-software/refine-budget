@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
-import {
-	getUserEmails,
-	addUserEmail,
-	deleteUserEmail,
-} from "../api/admin/emails";
-import deleteUserIcon from "../../public/delete-user-icon.svg";
-import addUserIcon from "../../public/add-user-icon.svg";
+import { useState } from "react";
+import deleteUserIcon from "/delete-user-icon.svg";
+import addUserIcon from "/add-user-icon.svg";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addUserEmail, deleteUserEmail, getUserEmails } from "../../api/admin/emails";
 
 const ManageEmails = () => {
 	const queryClient = useQueryClient();
@@ -32,7 +28,7 @@ const ManageEmails = () => {
 		<div className="flex flex-col items-center gap-4">
 			<div className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center mb-3 font-bold text-neutral-400">
 				<input
-					className="ml-4"
+					className="ml-4 focus:border-none focus:outline-none active:border-none active:outline-none"
 					type="email"
 					placeholder="Enter email"
 					value={newEmail}
@@ -41,7 +37,7 @@ const ManageEmails = () => {
 				/>
 				<button
 					onClick={() => addMutation.mutate(newEmail)}
-					className="mr-4"
+					className="mr-4 cursor-pointer p-2"
 				>
 					<img src={addUserIcon} alt="adding user button" />
 				</button>
@@ -56,7 +52,7 @@ const ManageEmails = () => {
 						<span className="flex ml-4">{email}</span>
 						<button
 							onClick={() => deleteMutation.mutate(id)}
-							className="mr-4"
+							className="mr-4 cursor-pointer p-2"
 						>
 							<img
 								className="mr-4"

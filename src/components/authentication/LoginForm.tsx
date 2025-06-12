@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation } from "react-router";
+import { useFetcher, useNavigate } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 import { Role, User } from "../../types";
 
 const LoginForm = () => {
 	const auth = useContext(AuthContext);
-	const navigation = useNavigation();
 	const navigate = useNavigate();
 	const fetcher = useFetcher<
 		{ success: boolean; role: Role; user: User } | undefined
@@ -20,7 +19,11 @@ const LoginForm = () => {
 		}
 	}, [auth, navigate, fetcher.data]);
 
-	const isSubmitting = navigation.state === "submitting";
+	const forgotpasswordHandler = () => {
+		navigate("/reset-password");
+	}
+
+	const isSubmitting = fetcher.state === "submitting";
 
 	return (
 		<fetcher.Form method="POST" className="flex flex-col gap-10 w-full">
@@ -47,6 +50,10 @@ const LoginForm = () => {
 				className="bg-primary py-2.5 hover:bg-opacity-90 rounded-xl"
 			>
 				{isSubmitting ? "Loading..." : "Login"}
+			</button>
+
+			<button type="button" className="text-primary cursor-pointer underline underline-offset-2" onClick={() => forgotpasswordHandler()}>
+				Forgot password?
 			</button>
 		</fetcher.Form>
 	);

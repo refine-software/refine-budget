@@ -33,7 +33,7 @@ const RegisterForm = () => {
     }, [preview]);
 
     useEffect(() => {
-        if ((fetcher.state === "idle" && fetcher.data?.success && submittedEmail) || (fetcher.data?.status === 409 && submittedEmail)) {
+        if ((fetcher.state === "idle" && fetcher.data?.success && submittedEmail)) {
             setEmail(submittedEmail);
             navigate("/register/verify");
         }
@@ -52,9 +52,12 @@ const RegisterForm = () => {
         }
     };
 
+    const isLoading = fetcher.state === "submitting" || fetcher.state === "loading";
+
     let errorMessage = "";
     if (fetcher.data?.status === 400) errorMessage = "Invalid user data or image upload.";
     else if (fetcher.data?.status === 403) errorMessage = "Registration forbidden. This email is not allowed.";
+    else if (fetcher.data?.status === 409) errorMessage = "You've already signed up, try to log in"
     else if (fetcher.data?.status === 500) errorMessage = "Internal server error. Please try again later.";
 
     return (
@@ -107,7 +110,9 @@ const RegisterForm = () => {
                     <div className="text-red-600 text-sm">{passwordError}</div>
                 )}
             </div>
-            <button className="w-full bg-primary p-3 rounded-2xl" type="submit">Register</button>
+            <button className="w-full bg-primary p-3 rounded-2xl" type="submit" disabled={isLoading}>
+                Register
+            </button>
         </fetcher.Form>
     )
 }

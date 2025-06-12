@@ -57,7 +57,6 @@ export async function loginAction({ request }: { request: Request }) {
 	setRole(res.role);
 
 	const userRes = await getUser();
-	console.log(userRes);
 
 	return { success: true, role: res.role, user: userRes };
 }

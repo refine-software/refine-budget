@@ -6,8 +6,7 @@ const AuthNav = () => {
 			<NavLink
 				to="/login"
 				className={({ isActive }) =>
-					`${
-						isActive ? "bg-primary" : ""
+					`${isActive ? "bg-primary" : ""
 					} block border-1 border-primary w-32 text-center px-4 py-2 `
 				}
 			>
@@ -17,8 +16,7 @@ const AuthNav = () => {
 			<NavLink
 				to="/register"
 				className={({ isActive }) =>
-					`${
-						isActive ? "bg-primary" : ""
+					`${isActive ? "bg-primary" : ""
 					} block border-1 border-primary w-32 text-center px-4 py-2 `
 				}
 			>

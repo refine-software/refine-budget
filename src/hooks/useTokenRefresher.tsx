@@ -2,10 +2,8 @@ import { useEffect, useRef, useCallback } from "react";
 import { getAccessToken, setAccessToken } from "../utils";
 import { refreshTokens } from "../api";
 import axios from "axios";
-import { getDeviceId } from "../utils/localStorage/deviceId";
 
 const useTokenRefresher = () => {
-	const deviceId = getDeviceId();
 	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const scheduleRefresh = useCallback(async () => {
@@ -17,11 +15,12 @@ const useTokenRefresher = () => {
 
 		timeoutRef.current = setTimeout(async () => {
 			try {
+				console.log("attempting to refresh token");
 				const res = await refreshTokens();
 				if (!axios.isAxiosError(res) && !(res instanceof Error)) {
 					setAccessToken({
 						accessToken: res.access_token,
-						accessTokenExp: new Date(Date.now() + 10000),
+						accessTokenExp: new Date(Date.now() + 600_000),
 					});
 
 					scheduleRefresh();
@@ -32,7 +31,7 @@ const useTokenRefresher = () => {
 				console.error("Error refreshing token:", err);
 			}
 		}, delay);
-	}, [deviceId]);
+	}, []);
 
 	useEffect(() => {
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);

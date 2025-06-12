@@ -1,6 +1,6 @@
-import UserCard from "../components/users/UserCard";
-import { getAdminUsers, debtReliefAll } from "../api/admin/users";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { debtReliefAll, getAdminUsers } from "../../api/admin/users";
+import UserCard from "../../components/users/UserCard";
 
 const Users = () => {
 	const {

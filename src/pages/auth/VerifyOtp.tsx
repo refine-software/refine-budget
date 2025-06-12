@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { RegisterContext } from "../store/register-context";
-import { resendVerificationCode, verifyAccount } from "../api";
 import axios from "axios";
+import { RegisterContext } from "../../store/register-context";
+import { resendVerificationCode, verifyAccount } from "../../api";
 
 /**
  * TODO: when the user clicks resend verification we should:
