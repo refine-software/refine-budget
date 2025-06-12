@@ -12,7 +12,7 @@ export function getAccessToken(): AccessToken | null {
 
 	const date = dateConversion(tokenExp);
 	if (date === null) {
-		console.log("bad date");
+		console.error("couldn't convert date");
 		return null;
 	}
 
@@ -25,6 +25,7 @@ export function setAccessToken(accessToken: AccessToken): void {
 	localStorage.setItem("accessToken", token);
 	localStorage.setItem("accessTokenExp", exp);
 }
+
 export function clearAccessToken(): void {
 	localStorage.removeItem("accessToken");
 	localStorage.removeItem("accessTokenExp");

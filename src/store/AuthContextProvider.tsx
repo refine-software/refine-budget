@@ -22,7 +22,10 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 				return;
 			}
 
-			if (localStorageRole) setRole(localStorageRole);
+			if (localStorageRole) {
+				console.log("Role exists:", localStorageRole);
+				setRole(localStorageRole);
+			}
 
 			const tokenObj = getAccessToken();
 			if (tokenObj !== null && tokenObj.accessTokenExp > new Date()) {
@@ -33,7 +36,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 				} else if (userRes instanceof Error) {
 					console.error(userRes);
 				} else {
-					setRole(localStorageRole || userRes.role || Role.USER);
+					setRole(userRes.role);
 					setUser(userRes);
 				}
 
