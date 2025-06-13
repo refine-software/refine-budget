@@ -1,8 +1,9 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { debtReliefAll, getAdminUsers } from "../../api/admin/users";
 import UserCard from "../../components/users/UserCard";
 
 const Users = () => {
+	const queryClient = useQueryClient();
 	const {
 		data: users = [],
 		isLoading,
@@ -16,6 +17,7 @@ const Users = () => {
 	const debtReliefMutation = useMutation({
 		mutationFn: debtReliefAll,
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
 			alert("Debt relief applied to all users successfully!");
 		},
 		onError: () => {

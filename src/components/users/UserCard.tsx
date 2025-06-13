@@ -7,7 +7,6 @@ import {
 } from "../../api/admin/users";
 import { User, Role } from "../../types";
 import profile from "../../../public/profile.svg";
-import threeDots from "../../../public/pepicons-pencil_dots-y.svg";
 
 interface UserCardProps {
 	user: User;
@@ -29,14 +28,9 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 
 	const handleDebtRelief = async () => {
 		try {
-			const res = await relieveUserDebt(user.id);
-			if (res) {
-				alert("Debt relieved successfully!");
-			} else {
-				alert("Failed to relieve debt.");
-			}
-		} catch (error) {
-			console.error("Error relieving debt:", error);
+			await relieveUserDebt(user.id);
+		} catch (err) {
+			console.error("Error relieving debt:", err);
 			alert("An error occurred while relieving debt.");
 		}
 	};

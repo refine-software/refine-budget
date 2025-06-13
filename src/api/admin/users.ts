@@ -60,8 +60,8 @@ const relieveUserDebt = async (userId: number): Promise<number> => {
 	try {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
-		const res = await api.post(
-			`/admin/user/${userId}`,
+		const res = await api.patch(
+			`/admin/user/debt-relief/${userId}`,
 			{},
 			{
 				headers: {
@@ -137,7 +137,7 @@ const debtReliefAll = async (): Promise<boolean> => {
 		const accTokenObj = getAccessToken();
 		if (!accTokenObj) throw new Error("Unauthorized");
 
-		await api.post(
+		await api.patch(
 			`/admin/users/debt-relief`,
 			{},
 			{
