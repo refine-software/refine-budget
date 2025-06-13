@@ -1,11 +1,17 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 import { Role } from "../../types";
 
 const Navbar = () => {
-	const { role } = useContext(AuthContext);
-	const isAdmin = role === Role.ADMIN;
+	const auth = useContext(AuthContext);
+	const { role } = auth;
+	const location = useLocation();
+	const [isAdmin, setIsAdmin] = useState<boolean>(role === Role.ADMIN);
+
+	useEffect(() => {
+		setIsAdmin(true);
+	}, [auth]);
 
 	return (
 		<nav className="bg-primary fixed w-full overflow-hidden bottom-0 z-50 ">
@@ -50,7 +56,6 @@ const Navbar = () => {
 					<NavLink
 						to={"/control"}
 						className={({ isActive }) => {
-							const location = useLocation();
 							return isActive ||
 								[
 									"/users",
@@ -62,16 +67,15 @@ const Navbar = () => {
 						}}
 					>
 						{({ isActive }) => {
-							const location = useLocation();
 							return (
 								<img
 									src={
 										isActive ||
-										[
-											"/users",
-											"/transactions",
-											"/manage-emails",
-										].includes(location.pathname)
+											[
+												"/users",
+												"/transactions",
+												"/manage-emails",
+											].includes(location.pathname)
 											? "/public/control-active.svg"
 											: "/public/control.svg"
 									}

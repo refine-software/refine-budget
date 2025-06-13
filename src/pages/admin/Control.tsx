@@ -4,15 +4,16 @@ import transaction from "/transaction.png"
 import user from "/user.png"
 
 type Control = {
+	id: number;
 	location: string;
 	title: string;
 	image: string;
 }
 
 const controls: Control[] = [
-	{ location: "/manage-emails", title: "Allowed Emails", image: mail },
-	{ location: "/transactions", title: "Transactions", image: transaction },
-	{ location: "/users", title: "Users", image: user },
+	{ id: 1, location: "/manage-emails", title: "Allowed Emails", image: mail },
+	{ id: 2, location: "/transactions", title: "Transactions", image: transaction },
+	{ id: 3, location: "/users", title: "Users", image: user },
 ];
 
 const Control = () => {
@@ -32,6 +33,7 @@ const ControlBtn = ({ control }: { control: Control }) => {
 		<button
 			className="flex flex-col justify-center items-center gap-4 bg-grey rounded-3xl w-full aspect-square font-bold text-lg shadow-2xl cursor-pointer hover:bg-primary"
 			onClick={() => navigate(control.location)}
+			key={control.id}
 		>
 			<img src={control.image} alt={control.title} className="h-[50%]" />
 			<p>{control.title}</p>
