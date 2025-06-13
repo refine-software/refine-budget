@@ -17,9 +17,7 @@ export async function getTransactions(
 	if (this.page) queries.push("page=" + this.page);
 	if (this.limit) queries.push("limit=" + this.limit);
 	if (this.sort) queries.push("sort=" + this.sort);
-	if (this.transactionType)
-		queries.push("trans-type=" + this.transactionType);
-
+	if (this.transactionType) queries.push("trans-type=" + this.transactionType);
 	if (
 		this.depositTypes &&
 		this.transactionType !== TransactionTypes.withdrawal &&
