@@ -18,6 +18,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
+import ResetPasswordConfirm from "./pages/auth/ResetPasswordConfirm";
 
 const queryClient = new QueryClient();
 
@@ -106,7 +107,7 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: "confirm",
-						element: <>confirm</>,
+						element: <ResetPasswordConfirm />,
 					}
 				]
 			}
