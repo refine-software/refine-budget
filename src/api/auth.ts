@@ -124,10 +124,25 @@ async function refreshTokens(): Promise<RefreshResType | AxiosError | Error> {
 	}
 }
 
+async function initiatePasswordReset(email: string): Promise<number> {
+	const res = await api.post("auth/reset-password", { email });
+	return res.status;
+}
+
+async function resetPassword(newPassword: string, token: string): Promise<number> {
+	const res = await api.post("auth/reset-password/confirm", {
+		new_password: newPassword,
+		token: token
+	})
+	return res.status;
+}
+
 export {
 	register,
 	resendVerificationCode,
 	verifyAccount,
 	login,
 	refreshTokens,
+	initiatePasswordReset,
+	resetPassword
 };
