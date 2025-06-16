@@ -3,6 +3,8 @@ import LeftArrow from "/Vector.svg";
 import { useContext } from "react";
 import { AuthContext } from "../../store/auth-context";
 
+const excludedPaths: string[] = ["/", "/login", "/register", "/reset-password/confirm"];
+
 const Header = () => {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
@@ -11,17 +13,13 @@ const Header = () => {
     return (
         <header className="bg-primary h-72 absolute top-0 w-full z-10">
             <h2 className="flex items-center justify-center px-10 h-20 text-2xl font-medium">
-                {pathname !== "/" && pathname !== "/login" && pathname !== "/register" ? (
+                {!excludedPaths.includes(pathname) && (
                     <button
                         className="absolute left-4 cursor-pointer px-4"
-                        onClick={() => {
-                            navigate(-1);
-                        }}
+                        onClick={() => navigate(-1)}
                     >
                         <img src={LeftArrow} alt="going back icon" />
                     </button>
-                ) : (
-                    ""
                 )}
                 {getHeaderTitle(pathname, auth.user.name)}
             </h2>
@@ -54,6 +52,8 @@ function getHeaderTitle(
             return "Manage Emails";
         case "/reset-password":
             return "Password Reset";
+        case "/reset-password/confirm":
+            return "Confirm Reset"
         default:
             return "";
     }
