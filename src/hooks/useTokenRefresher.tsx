@@ -11,8 +11,8 @@ const useTokenRefresher = () => {
 		if (!accessToken) return;
 
 		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 5000;
-		if (delay <= 0) return;
 
+		if (delay <= 0) return;
 		timeoutRef.current = setTimeout(async () => {
 			try {
 				console.log("attempting to refresh token");
