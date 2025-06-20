@@ -21,7 +21,7 @@ export function getAccessToken(): AccessToken | null {
 
 export function setAccessToken(accessToken: AccessToken): void {
 	const { accessToken: token, accessTokenExp } = accessToken;
-	const exp = accessTokenExp.toLocaleString();
+	const exp = accessTokenExp.toISOString();
 	localStorage.setItem("accessToken", token);
 	localStorage.setItem("accessTokenExp", exp);
 }
