@@ -10,7 +10,7 @@ const Navbar = () => {
 	const [isAdmin, setIsAdmin] = useState<boolean>(role === Role.ADMIN);
 
 	useEffect(() => {
-		setIsAdmin(true);
+		setIsAdmin(auth.role === Role.ADMIN);
 	}, [auth]);
 
 	return (
@@ -19,11 +19,7 @@ const Navbar = () => {
 				<NavLink to={"/"}>
 					{({ isActive }) => (
 						<img
-							src={
-								isActive
-									? "./public/home-active.svg"
-									: "/public/home.svg"
-							}
+							src={isActive ? "./public/home-active.svg" : "/public/home.svg"}
 							alt="Home"
 						/>
 					)}
@@ -32,9 +28,7 @@ const Navbar = () => {
 					{({ isActive }) => (
 						<img
 							src={
-								isActive
-									? "/public/history-active.svg"
-									: "/public/history.svg"
+								isActive ? "/public/history-active.svg" : "/public/history.svg"
 							}
 							alt="history"
 						/>
@@ -44,9 +38,7 @@ const Navbar = () => {
 					{({ isActive }) => (
 						<img
 							src={
-								isActive
-									? "/public/profile-active.svg"
-									: "/public/profile.svg"
+								isActive ? "/public/profile-active.svg" : "/public/profile.svg"
 							}
 							alt="Home"
 						/>
@@ -57,11 +49,9 @@ const Navbar = () => {
 						to={"/control"}
 						className={({ isActive }) => {
 							return isActive ||
-								[
-									"/users",
-									"/transactions",
-									"/manage-emails",
-								].includes(location.pathname)
+								["/users", "/transactions", "/manage-emails"].includes(
+									location.pathname,
+								)
 								? "active-class"
 								: "";
 						}}
@@ -71,11 +61,9 @@ const Navbar = () => {
 								<img
 									src={
 										isActive ||
-											[
-												"/users",
-												"/transactions",
-												"/manage-emails",
-											].includes(location.pathname)
+											["/users", "/transactions", "/manage-emails"].includes(
+												location.pathname,
+											)
 											? "/public/control-active.svg"
 											: "/public/control.svg"
 									}
