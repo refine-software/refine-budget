@@ -57,7 +57,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 		<div className="flex flex-col gap-2 border border-primary rounded-3xl p-2">
 			<div className="relative h-12">
 				{user.role === Role.ADMIN && (
-					<div className="border border-primary text-primary rounded-2xl absolute left-2 top-2 py-0.5 px-1">
+					<div className="border border-primary w-20 text-center text-primary rounded-2xl absolute left-2 top-2 py-0.5 px-1">
 						Admin
 					</div>
 				)}
@@ -69,7 +69,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 
 				<div className="absolute right-1 top-1 w-9 text-white border-1 border-primary rounded shadow-2xl p-2">
 					<select
-						className="block w-full text-left "
+						className="block w-full text-left text-white border-0 rounded-lg"
 						onChange={(e) => {
 							const selectedAction = e.target.value;
 							if (selectedAction === "editDebt")
@@ -124,16 +124,23 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 				</div>
 			</div>
 			{showEditDebtBox && (
-				<div className="flex border-primary w-full mt-4">
+				<div className="flex border-primary mt-4">
 					<input
 						type="number"
-						placeholder={newDebt.toString()}
 						onChange={(e) => setNewDebt(Number(e.target.value))}
-						className="outline-none border border-primary rounded-lg p-1"
+						className="outline-none border border-primary rounded-2xl p-1 w-40"
 					/>
-					<div className="flex gap-2 ml-2">
-						<button onClick={handleEditDebt}>Submit</button>
-						<button onClick={() => setShowEditDebtBox(false)}>
+					<div className="flex gap-2 ml-2 ">
+						<button
+							className="border border-primary text-primary rounded-2xl w-20 "
+							onClick={handleEditDebt}
+						>
+							Submit
+						</button>
+						<button
+							className="border border-primary text-primary rounded-2xl w-20 "
+							onClick={() => setShowEditDebtBox(false)}
+						>
 							Cancel
 						</button>
 					</div>
