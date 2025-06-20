@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactions } from "../api/transactions";
-import { DepositTypes, SortTypes, TransactionsReqQueries, TransactionTypes } from "../types";
+import {
+	DepositTypes,
+	SortTypes,
+	TransactionsReqQueries,
+	TransactionTypes,
+} from "../types";
 import Cards from "../components/history/Cards";
 import Pagination from "../components/history/Pagination";
 import SortAndFilter from "../components/history/SortAndFilter";
@@ -18,36 +23,36 @@ const History = () => {
 			return {
 				...prev,
 				page: page,
-			}
-		})
-	}
+			};
+		});
+	};
 
 	const setSort = (sortType: SortTypes) => {
 		setTransReqQuery((prev) => {
 			return {
 				...prev,
-				sort: sortType
-			}
-		})
-	}
+				sort: sortType,
+			};
+		});
+	};
 
 	const setTransactionType = (transType: TransactionTypes) => {
 		setTransReqQuery((prev) => {
 			return {
 				...prev,
-				transactionType: transType
-			}
-		})
-	}
+				transactionType: transType,
+			};
+		});
+	};
 
 	const setDepositTypes = (depositTypes: DepositTypes[]) => {
 		setTransReqQuery((prev) => {
 			return {
 				...prev,
-				depositTypes: depositTypes
-			}
-		})
-	}
+				depositTypes: depositTypes,
+			};
+		});
+	};
 
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: ["transactions", transReqQuery],
@@ -63,11 +68,19 @@ const History = () => {
 	} else if (data) {
 		body = (
 			<>
-				<SortAndFilter setDepositTypes={setDepositTypes} setSort={setSort} setTransactionType={setTransactionType} />
+				<SortAndFilter
+					setDepositTypes={setDepositTypes}
+					setSort={setSort}
+					setTransactionType={setTransactionType}
+				/>
 				<Cards transactions={data.transactions} />
-				<Pagination currentPage={transReqQuery.page} pages={data.num_of_pages} setPage={setPage} />
+				<Pagination
+					currentPage={transReqQuery.page}
+					pages={data.num_of_pages}
+					setPage={setPage}
+				/>
 			</>
-		)
+		);
 	} else {
 		body = <p className="text-center text-2xl">No transactions found.</p>;
 	}
