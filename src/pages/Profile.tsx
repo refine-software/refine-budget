@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 // import profileImage from "../../public/profile.svg";
 import { AuthContext } from "../store/auth-context";
 // import axios from "axios";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
 const Profile = () => {
 	const navigate = useNavigate();
 	const auth = useContext(AuthContext);
@@ -45,8 +45,18 @@ const Profile = () => {
 	return (
 		<div className="flex flex-col items-center justify-center gap-10">
 			<div className="flex justify-center items-center flex-col gap-4">
-				<div className="w-30 h-30 border-primary border-2 rounded-full flex items-center justify-center overflow-hidden">
-					<img
+				<div className="w-30 h-30 border-primary border-2 rounded-full flex items-center justify-center overflow-hidden relative">
+					<label
+						htmlFor="profileImageInput"
+						className="absolute bottom-0 w-full text-center font-medium"
+					>
+						<div className="bg-primary opacity-60 w-full h-full absolute"></div>
+						<span className="relative text-white opacity-100">
+							edit
+						</span>
+					</label>
+					<LazyLoadImage
+						loading="lazy"
 						className="object-cover w-full h-full"
 						src={user.image}
 						alt="Profile"
@@ -54,12 +64,6 @@ const Profile = () => {
 					/>
 				</div>
 
-				<label
-					htmlFor="profileImageInput"
-					className="text-primary font-medium"
-				>
-					Change Profile Image
-				</label>
 				<input
 					id="profileImageInput"
 					type="file"
