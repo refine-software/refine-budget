@@ -51,11 +51,11 @@ const Pagination = ({ currentPage, pages, setPage }: Props) => {
 
     return (
         <div className="flex justify-center items-center gap-2">
-            <button onClick={() => setPage(1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`}>
+            <button onClick={() => setPage(1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === 1}>
                 <img src={back} alt="go back" className="w-3" />
             </button>
             {paginationButtons}
-            <button onClick={() => setPage(pages)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`}>
+            <button onClick={() => setPage(pages)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === pages}>
                 <img src={back} alt="go forward" className="w-3 rotate-180" />
             </button>
         </div>
