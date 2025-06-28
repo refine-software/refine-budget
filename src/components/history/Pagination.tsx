@@ -11,7 +11,7 @@ const Pagination = ({ currentPage, pages, setPage }: Props) => {
     const paginationButtons: JSX.Element[] = [];
 
     if (currentPage === 1) {
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= pages && i <= 3; i++) {
             paginationButtons.push(
                 <button
                     className={`${i === currentPage ? "border-primary text-primary" : "border-white"} p-1 w-10 border  aspect-square font-bold rounded-sm cursor-pointer`}
@@ -24,7 +24,7 @@ const Pagination = ({ currentPage, pages, setPage }: Props) => {
         }
     }
     else if (currentPage === pages) {
-        for (let i = currentPage - 2; i <= currentPage; i++) {
+        for (let i = pages === 2 ? currentPage - 1 : currentPage - 2; i <= currentPage; i++) {
             paginationButtons.push(
                 <button
                     className={`${i === currentPage ? "border-primary text-primary" : "border-white"} p-1 w-10 border  aspect-square font-bold rounded-sm cursor-pointer`}
@@ -51,15 +51,15 @@ const Pagination = ({ currentPage, pages, setPage }: Props) => {
 
     return (
         <div className="flex justify-center items-center gap-2">
-            <button onClick={() => setPage(1)} className="border border-white bg-primary w-10 aspect-square flex justify-center items-center rounded-sm">
+            <button onClick={() => setPage(1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`}>
                 <img src={back} alt="go back" className="w-3" />
             </button>
             {paginationButtons}
-            <button onClick={() => setPage(pages)} className="border border-white bg-primary w-10 aspect-square flex justify-center items-center rounded-sm">
-                <img src={back} alt="go back" className="w-3 rotate-180" />
+            <button onClick={() => setPage(pages)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`}>
+                <img src={back} alt="go forward" className="w-3 rotate-180" />
             </button>
         </div>
     )
 }
 
-export default Pagination
+export default Pagination;
