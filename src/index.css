@@ -4,6 +4,7 @@
 @theme {
 	--color-dark: #232323;
 	--color-primary: #f0841e;
+	--color-primary-dim: #9b5514;
 	--color-card-bg: #2a2a2a;
 	--color-grey: #373737;
 	--color-green: #04ff00;
@@ -33,4 +34,5 @@ input[type="number"] {
 input:active,
 input:focus {
 	outline: none;
+	color: ;
 }
