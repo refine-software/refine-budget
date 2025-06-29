@@ -20,7 +20,16 @@ import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/auth/ResetPasswordConfirm";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			refetchOnReconnect: false,
+			refetchOnMount: false,
+			staleTime: Infinity,
+		}
+	}
+});
 
 const router = createBrowserRouter([
 	{
