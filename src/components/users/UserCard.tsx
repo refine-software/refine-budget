@@ -36,11 +36,10 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 	};
 
 	const handleDeleteUser = async () => {
-		const success = await deleteUser(user.id);
-		if (success) {
-			alert("User deleted successfully!");
-		} else {
-			alert("Failed to delete user.");
+		try {
+			await deleteUser(user.id);
+		} catch (err) {
+			console.log(err);
 		}
 	};
 

@@ -1,13 +1,22 @@
+import { useContext } from "react";
 import { Outlet } from "react-router";
 import Navbar from "../components/navbar/Navbar";
-import useTokenRefresher from "../hooks/useTokenRefresher";
-import { useContext } from "react";
-import { AuthContext } from "../store/auth-context";
 import Header from "../components/navbar/Header";
+import useTokenRefresher from "../hooks/useTokenRefresher";
+import { AuthContext } from "../store/auth-context";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const Root = () => {
-	useTokenRefresher();
 	const auth = useContext(AuthContext);
+	useTokenRefresher();
+
+	if (auth.loading) {
+		return (
+			<main className="h-lvh w-full bg-dark py-10 px-6 flex justify-center items-center">
+				<LoadingSpinner size="huge" />
+			</main>
+		);
+	}
 
 	return (
 		<div className="relative">
@@ -19,6 +28,5 @@ const Root = () => {
 		</div>
 	);
 };
-
 
 export default Root;

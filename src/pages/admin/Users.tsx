@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { debtReliefAll, getAdminUsers } from "../../api/admin/users";
 import UserCard from "../../components/users/UserCard";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 const Users = () => {
 	const queryClient = useQueryClient();
@@ -25,8 +26,12 @@ const Users = () => {
 		},
 	});
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isLoading) return (
+		<LoadingSpinner size="huge" />
+	);
+
 	if (isError) return <div>Error loading users: {error.message}</div>;
+
 	return (
 		<div className="flex flex-col items-center justify-center">
 			<button

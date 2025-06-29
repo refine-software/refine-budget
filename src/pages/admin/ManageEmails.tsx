@@ -3,29 +3,40 @@ import deleteUserIcon from "/delete-user-icon.svg";
 import addUserIcon from "/add-user-icon.svg";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addUserEmail, deleteUserEmail, getUserEmails } from "../../api/admin/emails";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 const ManageEmails = () => {
+	const [newEmail, setNewEmail] = useState("");
+	const [deletingId, setDeletingId] = useState<number | null>(null);
 	const queryClient = useQueryClient();
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: ["emails"],
 		queryFn: getUserEmails,
 	});
+
 	const addMutation = useMutation({
 		mutationFn: addUserEmail,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["emails"] });
+			setNewEmail("");
 		},
 	});
+
 	const deleteMutation = useMutation({
 		mutationFn: deleteUserEmail,
+		onMutate: (id: number) => {
+			setDeletingId(id);
+		},
+		onSettled: () => {
+			setDeletingId(null);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["emails"] });
 		},
 	});
-	const [newEmail, setNewEmail] = useState("");
 
 	return (
-		<div className="flex flex-col items-center gap-4">
+		<div className="flex flex-col items-center gap-8">
 			<div className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center mb-3 font-bold text-neutral-400">
 				<input
 					className="ml-4 focus:border-none focus:outline-none active:border-none active:outline-none"
@@ -36,33 +47,54 @@ const ManageEmails = () => {
 					required
 				/>
 				<button
-					onClick={() => addMutation.mutate(newEmail)}
+					onClick={() => {
+						if (!newEmail.trim()) return;
+						addMutation.mutate(newEmail.trim());
+					}}
+					disabled={addMutation.isPending}
 					className="mr-4 cursor-pointer p-2"
 				>
-					<img src={addUserIcon} alt="adding user button" />
+					{
+						addMutation.isPending ?
+							<LoadingSpinner size="mid" /> :
+							<img src={addUserIcon} alt="adding user button" />
+					}
+
 				</button>
 			</div>
-			<h2 className="self-start ml-2 font-bold">Allowed Emails</h2>
-			<ul>
-				{data?.map(({ id, email }) => (
-					<li
-						key={id}
-						className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center mb-3 font-bold text-neutral-400"
-					>
-						<span className="flex ml-4">{email}</span>
-						<button
-							onClick={() => deleteMutation.mutate(id)}
-							className="mr-4 cursor-pointer p-2"
+			<h2 className="font-bold text-2xl">Allowed Emails</h2>
+			{isPending ? (
+				<LoadingSpinner size="big" />
+			) : (
+				<ul className="flex flex-col gap-4 text-neutral-200">
+					{data?.length === 0 && (
+						<p>No allowed emails yet.</p>
+					)}
+					{data?.map(({ id, email }) => (
+						<li
+							key={id}
+							className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center font-bold px-4"
 						>
-							<img
-								className="mr-4"
-								src={deleteUserIcon}
-								alt="delete user button"
-							/>
-						</button>
-					</li>
-				))}
-			</ul>
+							<span>{email}</span>
+							<button
+								onClick={() => deleteMutation.mutate(id)}
+								disabled={deletingId === id}
+								className="cursor-pointer p-2"
+							>
+								{deletingId === id ? (
+									<LoadingSpinner size="mid" />
+								) : (
+									<img
+										className=""
+										src={deleteUserIcon}
+										alt="delete user button"
+									/>
+								)}
+							</button>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 };

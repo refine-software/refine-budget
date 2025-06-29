@@ -1,10 +1,9 @@
 import { useState, useContext } from "react";
 import { updateUsername, updateProfileImage, logoutUser } from "../api";
 import { useNavigate } from "react-router";
-// import profileImage from "../../public/profile.svg";
 import { AuthContext } from "../store/auth-context";
-// import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+
 const Profile = () => {
 	const navigate = useNavigate();
 	const auth = useContext(AuthContext);
@@ -12,8 +11,8 @@ const Profile = () => {
 	const [newUsername, setNewUsername] = useState("");
 
 	const handleLogout = () => {
-		auth.logout();
 		logoutUser();
+		auth.logout();
 		navigate("/login");
 	};
 
