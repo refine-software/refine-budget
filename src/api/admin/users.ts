@@ -110,26 +110,16 @@ const editUserRole = async (
 	}
 };
 
-const deleteUser = async (userId: number): Promise<boolean> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (!accTokenObj) throw new Error("Unauthorized");
+const deleteUser = async (userId: number): Promise<number> => {
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("Unauthorized");
 
-		await api.delete(`/admin/user/${userId}`, {
-			headers: {
-				Authorization: `Bearer ${accTokenObj.accessToken}`,
-			},
-		});
-		return true;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			console.error("Error deleting user:", err.response?.data);
-			return false;
-		} else {
-			console.error("An unknown error occurred while deleting user.");
-			return false;
-		}
-	}
+	const res = await api.delete(`/admin/user/${userId}`, {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+		},
+	});
+	return res.status;
 };
 
 const debtReliefAll = async (): Promise<boolean> => {

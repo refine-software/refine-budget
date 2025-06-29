@@ -1,7 +1,6 @@
 import axios from "axios";
 import { login, register } from "../../api/auth";
-import { getDeviceId, setAccessToken, setDeviceId } from "../../utils";
-import { setRole } from "../../utils/localStorage/role";
+import { getDeviceId, setAccessToken, setDeviceId, setRole } from "../../utils";
 import { getUser } from "../../api";
 import { RegisterReq } from "../../types";
 

@@ -1,27 +1,17 @@
+import axios from "axios";
 import { User } from "../types";
 import api from "./axiosConfig";
-import { getAccessToken } from "../utils";
-import axios, { AxiosError } from "axios";
+import { getAccessToken, getDeviceId } from "../utils";
 
-const getUser = async (): Promise<User | AxiosError | Error> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (!accTokenObj) throw new Error("Unauthorized");
-		const res = await api.get("user", {
-			headers: {
-				Authorization: `Bearer ${accTokenObj.accessToken}`,
-			},
-		});
-		return res.data as User;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			return err;
-		} else {
-			return new Error(
-				"An unknown error occurred while fetching user data."
-			);
-		}
-	}
+const getUser = async (): Promise<User> => {
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("Unauthorized");
+	const res = await api.get("user", {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+		},
+	});
+	return res.data as User;
 };
 
 const updateUsername = async (name: string): Promise<{ name: string }> => {
@@ -40,8 +30,7 @@ const updateUsername = async (name: string): Promise<{ name: string }> => {
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
 			throw new Error(
-				`Failed to update username: ${
-					err.response?.data?.message || err.message
+				`Failed to update username: ${err.response?.data?.message || err.message
 				}`
 			);
 		} else {
@@ -71,8 +60,7 @@ const updateProfileImage = async (file: File): Promise<{ image: string }> => {
 		if (axios.isAxiosError(err)) {
 			console.error("Error response:", err.response?.data);
 			throw new Error(
-				`Failed to update profile image: ${
-					err.response?.data?.message || err.message
+				`Failed to update profile image: ${err.response?.data?.message || err.message
 				}`
 			);
 		} else {
@@ -84,25 +72,20 @@ const updateProfileImage = async (file: File): Promise<{ image: string }> => {
 };
 
 const logoutUser = async (): Promise<number> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (!accTokenObj) throw new Error("Unauthorized");
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("Unauthorized");
 
-		const res = await api.post("/user/logout", null, {
-			headers: { Authorization: `Bearer ${accTokenObj.accessToken}` },
-		});
-		return res.status;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			throw new Error(
-				`Failed to log out: ${
-					err.response?.data?.message || err.message
-				}`
-			);
-		} else {
-			throw new Error("An unknown error occurred while logging out.");
-		}
-	}
+	const deviceId = getDeviceId();
+	if (!deviceId) throw new Error("No deviceId found, bad logout.");
+
+	const res = await api.post("/user/logout", null, {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+			"Device-ID": deviceId,
+		},
+	});
+	console.log(res);
+	return res.status;
 };
 
 export { getUser, updateUsername, updateProfileImage, logoutUser };
