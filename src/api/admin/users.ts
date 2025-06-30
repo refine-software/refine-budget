@@ -46,28 +46,18 @@ const editUserDebt = async (
 };
 
 const relieveUserDebt = async (userId: number): Promise<number> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (!accTokenObj) throw new Error("Unauthorized");
-		const res = await api.patch(
-			`/admin/user/debt-relief/${userId}`,
-			{},
-			{
-				headers: {
-					Authorization: `Bearer ${accTokenObj.accessToken}`,
-				},
-			}
-		);
-		return res.status;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			throw err.response?.data;
-		} else {
-			throw new Error(
-				"An unknown error occurred while relieving user debt."
-			);
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("Unauthorized");
+	const res = await api.patch(
+		`/admin/user/debt-relief/${userId}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
+			},
 		}
-	}
+	);
+	return res.status;
 };
 
 const editUserRole = async (
