@@ -11,7 +11,8 @@
 - [x] Click on image to change it.
 - [x] Set as user functionality doesn't have an endpoint.
 - [x] The user card is chopped.
-- [ ] invalidate on new transaction.
+- [ ] Invalidate history on new transaction.
+- [ ] Handle edit debt in the admin users cards.
 
 ## Bugs
 
