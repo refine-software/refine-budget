@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loginAction, registerAction } from "./pages/actions";
+import { RegisterProvider } from "./store/RegisterContextProvider";
 import Root from "./pages/Root";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
@@ -9,7 +10,6 @@ import AuthContextProvider from "./store/AuthContextProvider";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
 import Control from "./pages/admin/Control";
-import { RegisterProvider } from "./store/RegisterContextProvider";
 import AdminRoute from "./pages/protection/AdminRoute";
 import Users from "./pages/admin/Users";
 import Transactions from "./pages/admin/Transactions";
