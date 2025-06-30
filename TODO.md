@@ -13,6 +13,7 @@
 - [x] The user card is chopped.
 - [ ] Invalidate history on new transaction.
 - [ ] Handle edit debt in the admin users cards.
+- [ ] Add the verified check mark in the user card.
 
 ## Bugs
 
