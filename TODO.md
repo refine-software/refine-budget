@@ -1,16 +1,16 @@
 # TODO
 
--   [x] Implement login functionality.
--   [x] We need to implement a functionality to refresh the tokens right before the token expires.
--   [x] Implement signup functionality.
--   [x] Implement the home screen.
--   [x] Make sure that your application carefully draws screen based on the user Role.
--   [x] Forget password page.
--   [ ] Sort and filter functionality in history page.
--   [x] Lazy load the profile image.
--   [x] Click on image to change it.
--   [ ] Set as user functionality doesn't have an endpoint.
--   [x] The user card is chopped.
+- [x] Implement login functionality.
+- [x] We need to implement a functionality to refresh the tokens right before the token expires.
+- [x] Implement signup functionality.
+- [x] Implement the home screen.
+- [x] Make sure that your application carefully draws screen based on the user Role.
+- [x] Forget password page.
+- [x] Sort and filter functionality in history page.
+- [x] Lazy load the profile image.
+- [x] Click on image to change it.
+- [x] Set as user functionality doesn't have an endpoint.
+- [x] The user card is chopped.
 - [ ] invalidate on new transaction.
 
 ## Bugs

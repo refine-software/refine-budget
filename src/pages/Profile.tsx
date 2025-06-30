@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { updateUsername, updateProfileImage, logoutUser } from "../api";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../store/auth-context";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -54,13 +53,7 @@ const Profile = () => {
 							edit
 						</span>
 					</label>
-					<LazyLoadImage
-						loading="lazy"
-						className="object-cover w-full h-full"
-						src={user.image}
-						alt="Profile"
-						width={100}
-					/>
+					<img className="object-cover w-full h-full" loading="lazy" src={user.image} alt="profile picture" />
 				</div>
 
 				<input

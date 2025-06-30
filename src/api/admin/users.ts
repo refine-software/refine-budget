@@ -3,28 +3,17 @@ import { User } from "../../types";
 import api from "../axiosConfig";
 import axios from "axios";
 
-const getAdminUsers = async (): Promise<User[] | undefined> => {
-	try {
-		const accTokenObj = getAccessToken();
-		if (!accTokenObj) throw new Error("Unauthorized");
+const getAdminUsers = async (): Promise<User[]> => {
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("Unauthorized");
 
-		const res = await api.get("/admin/users", {
-			headers: {
-				Authorization: `Bearer ${accTokenObj.accessToken}`,
-			},
-		});
-		return res.data as User[];
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			console.error("Error fetching admin users:", err.response?.data);
-			return undefined;
-		} else {
-			console.error(
-				"An unknown error occurred while fetching admin users."
-			);
-			return undefined;
-		}
-	}
+	const res = await api.get("/admin/users", {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+		},
+	});
+	console.log(res.data);
+	return res.data as User[];
 };
 
 const editUserDebt = async (
