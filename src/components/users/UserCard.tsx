@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
 	editUserDebt,
 	editUserRole,
@@ -7,14 +7,19 @@ import {
 } from "../../api/admin/users";
 import { User, Role } from "../../types";
 import profile from "../../../public/profile.svg";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../../store/auth-context";
 
 interface UserCardProps {
 	user: User;
 }
 
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
+	const navigate = useNavigate();
+	const auth = useContext(AuthContext);
 	const [showEditDebtBox, setShowEditDebtBox] = useState(false);
 	const [newDebt, setNewDebt] = useState<number>(user.debt);
+	const [error, setError] = useState("");
 
 	const handleEditDebt = async () => {
 		const success = await editUserDebt(newDebt, user.id);
@@ -30,18 +35,21 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 		try {
 			await relieveUserDebt(user.id);
 		} catch (err) {
-			console.error("Error relieving debt:", err);
-			alert("An error occurred while relieving debt.");
+			console.log(err);
+			// setError("failed to relief debt: " + err.message);
 		}
 	};
 
 	const handleDeleteUser = async () => {
 		try {
 			await deleteUser(user.id);
+			auth.logout();
+			navigate("/login");
 		} catch (err) {
 			console.log(err);
-		}
-	};
+			setError("failed to delete user");
+		};
+	}
 
 	const handleEditRole = async () => {
 		const success = await editUserRole("admin", user.id);
@@ -53,7 +61,8 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 	};
 
 	return (
-		<div className="flex flex-col gap-2 border border-primary rounded-3xl p-2">
+		<div className="flex flex-col gap-4 bg-grey rounded-3xl p-4 shadow-2xl">
+			{error !== "" && error}
 			<div className="relative h-12">
 				{user.role === Role.ADMIN && (
 					<div className="border border-primary w-20 text-center text-primary rounded-2xl absolute left-2 top-2 py-0.5 px-1">

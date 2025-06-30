@@ -11,9 +11,11 @@
 -   [x] Click on image to change it.
 -   [ ] Set as user functionality doesn't have an endpoint.
 -   [x] The user card is chopped.
+- [ ] invalidate on new transaction.
 
 ## Bugs
 
--   [x] Sometimes the front sends refresh request for no reason (investigate this).
--   [x] On initial page load the role isn't set.
--   [x] Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
+- [x] Sometimes the front sends refresh request for no reason (investigate this).
+- [x] On initial page load the role isn't set.
+- [x] Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
+- [ ] On initial page load the admin isn't set properly (when the user is admin the controls button in the nav doesn't show up).

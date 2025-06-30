@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { getAccessToken, setAccessToken } from "../utils";
 import { refreshTokens } from "../api";
-import axios from "axios";
 
 const useTokenRefresher = () => {
 	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -10,23 +9,19 @@ const useTokenRefresher = () => {
 		const accessToken = getAccessToken();
 		if (!accessToken) return;
 
-		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 5000;
+		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 10000;
 
 		if (delay <= 0) return;
 		timeoutRef.current = setTimeout(async () => {
 			try {
 				console.log("attempting to refresh token");
 				const res = await refreshTokens();
-				if (!axios.isAxiosError(res) && !(res instanceof Error)) {
-					setAccessToken({
-						accessToken: res.access_token,
-						accessTokenExp: new Date(Date.now() + 600_000),
-					});
+				setAccessToken({
+					accessToken: res.access_token,
+					accessTokenExp: new Date(Date.now() + 600_000),
+				});
 
-					scheduleRefresh();
-				} else {
-					console.error("Token refresh failed:", res);
-				}
+				scheduleRefresh();
 			} catch (err) {
 				console.error("Error refreshing token:", err);
 			}

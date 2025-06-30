@@ -34,5 +34,12 @@ input[type="number"] {
 input:active,
 input:focus {
 	outline: none;
-	color: ;
+}
+
+button {
+	cursor: pointer;
+}
+
+.main-screen-height {
+	min-height: calc(100dvh - 80px);
 }

@@ -1,90 +1,62 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getTransactions } from "../api/transactions";
-import {
-	DepositTypes,
-	SortTypes,
-	TransactionsReqQueries,
-	TransactionTypes,
-} from "../types";
+import { useCallback, useState } from "react";
+import { DepositTypes, SortTypes, TransactionTypes } from "../types";
+import SortAndFilter from "../components/history/SortAndFilter";
 import Cards from "../components/history/Cards";
 import Pagination from "../components/history/Pagination";
-import SortAndFilter from "../components/history/SortAndFilter";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import { useTransactions } from "../hooks/useTransactions";
 
 const History = () => {
-	const [transReqQuery, setTransReqQuery] = useState<TransactionsReqQueries>({
+	const [query, setQuery] = useState({
 		page: 1,
-		limit: 4,
+		limit: 5,
 		sort: SortTypes.dateDesc,
+		transactionType: undefined as TransactionTypes | undefined,
+		depositTypes: [] as DepositTypes[],
 	});
 
-	const setPage = (page: number) => {
-		setTransReqQuery((prev) => {
-			return {
-				...prev,
-				page: page,
-			};
-		});
-	};
+	const updateQuery = useCallback((updates: Partial<typeof query>) => {
+		setQuery((prev) => ({ ...prev, ...updates }));
+	}, []);
 
-	const setSort = (sortType: SortTypes) => {
-		setTransReqQuery((prev) => {
-			return {
-				...prev,
-				sort: sortType,
-			};
-		});
-	};
+	const { isPending, isError, data, error } = useTransactions(query);
 
-	const setTransactionType = (transType: TransactionTypes) => {
-		setTransReqQuery((prev) => {
-			return {
-				...prev,
-				transactionType: transType,
-			};
-		});
-	};
+	return (
+		<div className="flex flex-col gap-8">
+			<SortAndFilter
+				setSort={(s) => updateQuery({ sort: s })}
+				setTransactionType={(t) =>
+					updateQuery({ transactionType: t === "all" ? undefined : t })
+				}
+				setDepositTypes={(d) => updateQuery({ depositTypes: d })}
+			/>
 
-	const setDepositTypes = (depositTypes: DepositTypes[]) => {
-		setTransReqQuery((prev) => {
-			return {
-				...prev,
-				depositTypes: depositTypes,
-			};
-		});
-	};
-
-	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["transactions", transReqQuery],
-		queryFn: () => getTransactions.call(transReqQuery),
-	});
-	let body;
-
-	console.log("History page transactions", data);
-	if (isPending) {
-		body = <span>Loading...</span>;
-	} else if (isError) {
-		body = <span>Error: {(error as Error).message}</span>;
-	} else if (data) {
-		body = (
-			<>
-				<SortAndFilter
-					setDepositTypes={setDepositTypes}
-					setSort={setSort}
-					setTransactionType={setTransactionType}
-				/>
+			{/* Only the Cards section reacts to loading */}
+			{isPending && <LoadingSpinner size="big" />}
+			{isError && <span className="text-red-500">Error: {(error as Error).message}</span>}
+			{!isPending && data?.transactions === null && (
+				<div className="flex justify-center items-center">
+					<p className="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl text-gray-300 uppercase">
+						No transactions found
+					</p>
+				</div>
+			)}
+			{!isPending && data && data.transactions?.length > 0 && (
 				<Cards transactions={data.transactions} />
-				<Pagination
-					currentPage={transReqQuery.page}
-					pages={data.num_of_pages}
-					setPage={setPage}
-				/>
-			</>
-		);
-	} else {
-		body = <p className="text-center text-2xl">No transactions found.</p>;
-	}
-	return <div className="mb-20">{body}</div>;
+			)}
+
+			{/* Always show pagination if metadata exists */}
+			{
+				data && data.transactions && (
+					<Pagination
+						currentPage={data.metadata.current_page}
+						pages={data.metadata.last_page}
+						setPage={(p) => updateQuery({ page: p })}
+					/>
+				)
+			}
+		</div >
+	);
 };
 
 export default History;

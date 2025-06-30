@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { Transaction, TransactionTypes } from "../../types";
 import { strftime } from "@sharon-xa/strftime";
 
-const Card = ({ transaction }: { transaction: Transaction }) => {
+const Card = memo(({ transaction }: { transaction: Transaction }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [shortText, setShortText] = useState("");
@@ -24,7 +24,7 @@ const Card = ({ transaction }: { transaction: Transaction }) => {
 
 
     return (
-        <div className={`min-h-56 bg-card-bg rounded-3xl my-5 p-5 flex flex-col gap-5 shadow-xl transition-all duration-300`} key={transaction.id}>
+        <div className={`min-h-56 bg-card-bg rounded-3xl p-5 flex flex-col gap-5 shadow-xl transition-all duration-300`} key={transaction.id}>
             <div className={`capitalize text-2xl font-bold ${isDeposit ? "text-green" : "text-red"}`}>
                 {transaction.transaction_type}
             </div>
@@ -69,16 +69,16 @@ const Card = ({ transaction }: { transaction: Transaction }) => {
             </div>
         </div>
     );
-};
+});
 
-const Cards = ({ transactions }: { transactions: Transaction[] }) => {
+const Cards = memo(({ transactions }: { transactions: Transaction[] }) => {
     return (
-        <>
+        <div className="flex flex-col gap-6">
             {transactions.map(transaction => (
                 <Card key={transaction.id} transaction={transaction} />
             ))}
-        </>
+        </div>
     );
-};
+});
 
 export default Cards;

@@ -101,27 +101,19 @@ async function login({
 	}
 }
 
-async function refreshTokens(): Promise<RefreshResType | AxiosError | Error> {
-	try {
-		const deviceId = getDeviceId();
-		console.log("Refreshing tokens with deviceId:", deviceId);
-		const res: AxiosResponse = await api.post(
-			"auth/refresh",
-			{},
-			{
-				headers: {
-					"Device-ID": deviceId,
-				},
-			}
-		);
-		return res.data as RefreshResType;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			return err as AxiosError;
-		} else {
-			return new Error("An unknown error occurred") as Error;
+async function refreshTokens(): Promise<RefreshResType> {
+	const deviceId = getDeviceId();
+	console.log("Refreshing tokens with deviceId:", deviceId);
+	const res: AxiosResponse = await api.post(
+		"auth/refresh",
+		{},
+		{
+			headers: {
+				"Device-ID": deviceId,
+			},
 		}
-	}
+	);
+	return res.data as RefreshResType;
 }
 
 async function initiatePasswordReset(email: string): Promise<number> {

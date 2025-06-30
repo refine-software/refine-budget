@@ -11,7 +11,7 @@ const Header = () => {
     const { pathname } = useLocation();
 
     return (
-        <header className="bg-primary h-72 absolute top-0 w-full z-10">
+        <header className="bg-primary w-full z-10">
             <h2 className="flex items-center justify-center px-10 h-20 text-2xl font-medium">
                 {!excludedPaths.includes(pathname) && (
                     <button

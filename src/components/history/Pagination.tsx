@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import { JSX, memo } from "react";
 import back from "/Vector.svg"
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
     setPage: (page: number) => void;
 }
 
-const Pagination = ({ currentPage, pages, setPage }: Props) => {
+const Pagination = memo(({ currentPage, pages, setPage }: Props) => {
     const paginationButtons: JSX.Element[] = [];
 
     if (currentPage === 1) {
@@ -59,7 +59,7 @@ const Pagination = ({ currentPage, pages, setPage }: Props) => {
                 <img src={back} alt="go forward" className="w-3 rotate-180" />
             </button>
         </div>
-    )
-}
+    );
+});
 
 export default Pagination;

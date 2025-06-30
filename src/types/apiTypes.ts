@@ -96,7 +96,15 @@ export type Transaction = {
 	subscriber: string | null;
 };
 
+export type Metadata = {
+	current_page: number;
+	page_size: number;
+	first_page: number;
+	last_page: number;
+	total_records: number;
+}
+
 export type TransactionsRes = {
-	num_of_pages: number;
 	transactions: Transaction[];
+	metadata: Metadata;
 };

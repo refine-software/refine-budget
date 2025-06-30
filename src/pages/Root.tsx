@@ -19,9 +19,9 @@ const Root = () => {
 	}
 
 	return (
-		<div className="relative">
+		<div>
 			<Header />
-			<main className="min-h-container absolute top-20 w-full z-20 bg-dark py-10 px-6">
+			<main className="main-screen-height w-full z-20 bg-dark pt-8 pb-[122px] px-6">
 				<Outlet />
 			</main>
 			{auth.authenticated ? <Navbar /> : <></>}
