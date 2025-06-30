@@ -1,4 +1,9 @@
+import axios from "axios";
+import profile from "/default-profile.svg";
+import threeDots from "/three-dots.svg";
+import debt from "/debt.png";
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import {
 	editUserDebt,
 	editUserRole,
@@ -6,8 +11,6 @@ import {
 	relieveUserDebt,
 } from "../../api/admin/users";
 import { User, Role } from "../../types";
-import profile from "../../../public/profile.svg";
-import { useNavigate } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 
 interface UserCardProps {
@@ -17,7 +20,7 @@ interface UserCardProps {
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
 	const navigate = useNavigate();
 	const auth = useContext(AuthContext);
-	const [showEditDebtBox, setShowEditDebtBox] = useState(false);
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [newDebt, setNewDebt] = useState<number>(user.debt);
 	const [error, setError] = useState("");
 
@@ -25,7 +28,6 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 		const success = await editUserDebt(newDebt, user.id);
 		if (success) {
 			alert("Debt updated successfully!");
-			setShowEditDebtBox(false);
 		} else {
 			alert("Failed to update debt.");
 		}
@@ -36,7 +38,8 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 			await relieveUserDebt(user.id);
 		} catch (err) {
 			console.log(err);
-			// setError("failed to relief debt: " + err.message);
+			if (axios.isAxiosError(err))
+				setError("failed to relief debt: " + err.message);
 		}
 	};
 
@@ -51,8 +54,8 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 		};
 	}
 
-	const handleEditRole = async () => {
-		const success = await editUserRole("admin", user.id);
+	const handleEditRole = async (role: Role) => {
+		const success = await editUserRole(role, user.id);
 		if (success) {
 			alert("User role updated to admin!");
 		} else {
@@ -61,99 +64,77 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 	};
 
 	return (
-		<div className="flex flex-col gap-4 bg-grey rounded-3xl p-4 shadow-2xl">
+		<div className="flex flex-col gap-7 bg-[#2A2A2A] rounded-3xl p-4 shadow-2xl outline-2 outline-[#515151]">
 			{error !== "" && error}
-			<div className="relative h-12">
-				{user.role === Role.ADMIN && (
-					<div className="border border-primary w-20 text-center text-primary rounded-2xl absolute left-2 top-2 py-0.5 px-1">
-						Admin
-					</div>
-				)}
-				{user.role === Role.USER && (
-					<div className="border border-white text-primary rounded-2xl absolute left-2 top-2 py-0.5 px-1">
-						User
-					</div>
-				)}
+			<div className="h-10 flex justify-between items-center px-2.5">
+				<div className="w-24 py-1 border border-primary text-center text-primary rounded-lg bg-primary/10 uppercase font-bold">
+					{user.role}
+				</div>
 
-				<div className="absolute right-1 top-1 w-9 text-white border-1 border-primary rounded shadow-2xl p-2">
-					<select
-						className="block w-full text-left text-white border-0 rounded-lg"
-						onChange={(e) => {
-							const selectedAction = e.target.value;
-							if (selectedAction === "editDebt")
-								setShowEditDebtBox(true);
-							if (selectedAction === "debtRelief")
-								handleDebtRelief();
-							if (selectedAction === "deleteUser")
-								handleDeleteUser();
-							if (
-								selectedAction === "setAdmin" &&
-								user.role === Role.USER
-							)
-								handleEditRole();
-							if (
-								selectedAction === "setUser" &&
-								user.role === Role.ADMIN
-							)
-								handleEditRole();
-						}}
-					>
-						<option value="" selected disabled>
-							{/* <img src={threeDots} alt="three dots" /> */}
-							{/* <p className="text-primary">select an action</p> */}
-							Select Action
-						</option>
-						<option value="editDebt">Edit Debt</option>
-						<option value="debtRelief">Debt Relief</option>
-						<option value="deleteUser">Delete User</option>
-						{user.role === Role.USER && (
-							<option value="setAdmin">Set as Admin</option>
-						)}
-						{user.role === Role.ADMIN && (
-							<option value="setUser">Set as User</option>
-						)}
-					</select>
+				<div className="relative">
+					<img
+						src={threeDots}
+						alt="user settings"
+						className="w-10 cursor-pointer py-2"
+						onClick={() => setIsDropdownOpen(prev => !prev)}
+					/>
+					{isDropdownOpen && (
+						<div className="absolute right-0 top-10 bg-[#333] text-white shadow-lg rounded-md z-50 w-48 overflow-hidden border border-[#555]">
+							<button
+								className="w-full px-4 py-2 text-left hover:bg-primary/20"
+								onClick={() => {
+									handleDebtRelief();
+									setIsDropdownOpen(false);
+								}}
+							>
+								Relieve Debt
+							</button>
+							<button
+								className="w-full px-4 py-2 text-left hover:bg-primary/20"
+								onClick={() => {
+									handleDeleteUser();
+									setIsDropdownOpen(false);
+								}}
+							>
+								Delete User
+							</button>
+							<button
+								className="w-full px-4 py-2 text-left"
+								onClick={() => {
+									handleEditRole(user.role === Role.ADMIN ? Role.USER : Role.ADMIN);
+								}}
+							>
+								Set as {user.role === Role.ADMIN ? "User" : "Admin"}
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
-			<div className="flex items-center justify-center gap-4">
-				<div className="rounded-full w-32 h-32 outline-1 outline-gray-300 overflow-hidden">
+			<div className="flex items-center justify-center gap-4 px-2.5">
+				<div className="rounded-full w-24 aspect-square outline-2 outline-primary overflow-hidden">
 					<img
 						src={user.image || profile}
 						alt={`${user.name}'s profile`}
 						className=" object-cover w-full h-full"
 					/>
 				</div>
-				<div>
+				<div className="flex flex-col gap-2.5">
 					<p className="font-bold text-xl">{user.name}</p>
 					<p>{user.email}</p>
-					<p>
-						Debt Amount: IQD <span>{user.debt}</span>
-					</p>
 				</div>
 			</div>
-			{showEditDebtBox && (
-				<div className="flex border-primary mt-4">
-					<input
-						type="number"
-						onChange={(e) => setNewDebt(Number(e.target.value))}
-						className="outline-none border border-primary rounded-2xl p-1 w-40"
-					/>
-					<div className="flex gap-2 ml-2 ">
-						<button
-							className="border border-primary text-primary rounded-2xl w-20 "
-							onClick={handleEditDebt}
-						>
-							Submit
-						</button>
-						<button
-							className="border border-primary text-primary rounded-2xl w-20 "
-							onClick={() => setShowEditDebtBox(false)}
-						>
-							Cancel
-						</button>
+
+			<div className="h-14 border-t-2 border-[#515151] flex justify-between items-center px-4 pt-4">
+				<div className="flex justify-center items-center gap-3">
+					<div className="w-7 aspect-square">
+						<img src={debt} alt="debt" className="object-cover w-full h-full" />
 					</div>
+					<span>Debt</span>
 				</div>
-			)}
+				<p className={`${user.debt > 0 && "text-red"}`}>
+					{user.debt} IQD
+				</p>
+			</div>
 		</div>
 	);
 };
