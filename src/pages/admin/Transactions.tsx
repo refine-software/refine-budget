@@ -1,14 +1,15 @@
 import React, { useReducer, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DepositTypes, TransactionTypes, User } from "../../types";
 import { getAdminUsers } from "../../api/admin/users";
 import {
 	depositTransaction,
 	withdrawTransaction,
 } from "../../api/admin/transactions";
-import { Input, SelectField } from "../../components/TransactionsForm";
+import { Input, SelectField, TextArea } from "../../components/TransactionsForm";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
+type TextAreaEvent = React.ChangeEvent<HTMLTextAreaElement>;
 
 type State = {
 	formType: TransactionTypes;
@@ -63,6 +64,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const Transactions = () => {
+	const queryClient = useQueryClient();
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [errorMessage, setErrorMessage] = useState("");
 	const depositForm = React.useRef<HTMLFormElement>(null);
@@ -79,6 +81,7 @@ const Transactions = () => {
 			await withdrawTransaction(parseInt(state.amount), state.details);
 			dispatch({ type: "RESET_WITHDRAW" });
 			setErrorMessage("");
+			queryClient.invalidateQueries({ queryKey: ["budget", "transactions"] });
 		} catch (err) {
 			setErrorMessage(`Failed to process transaction: ${err}`);
 		}
@@ -95,6 +98,7 @@ const Transactions = () => {
 			});
 			dispatch({ type: "RESET_DEPOSIT" });
 			setErrorMessage("");
+
 		} catch (err) {
 			setErrorMessage(`Failed to process transaction: ${err}`);
 		}
@@ -138,14 +142,13 @@ const Transactions = () => {
 						}
 						required
 					/>
-					<Input
+					<TextArea
 						label="Description"
 						value={state.details}
-						onChange={(e: InputEvent) =>
+						onChange={(e: TextAreaEvent) =>
 							dispatch({ type: "SET_DETAILS", payload: e.target.value })
 						}
 						required
-						type="text"
 					/>
 					{errorMessage && <p className="text-red">{errorMessage}</p>}
 				</form>
@@ -176,15 +179,6 @@ const Transactions = () => {
 						options={depositTypeOptions}
 						required
 					/>
-					<Input
-						label="Details"
-						value={state.details}
-						onChange={(e: InputEvent) =>
-							dispatch({ type: "SET_DETAILS", payload: e.target.value })
-						}
-						required
-						type="text"
-					/>
 					{state.depositType === DepositTypes.subscription && (
 						<SelectField
 							label="Member"
@@ -205,12 +199,20 @@ const Transactions = () => {
 							required
 						/>
 					)}
+					<TextArea
+						label="Details"
+						value={state.details}
+						onChange={(e: TextAreaEvent) =>
+							dispatch({ type: "SET_DETAILS", payload: e.target.value })
+						}
+						required
+					/>
 					{errorMessage && <p className="text-red">{errorMessage}</p>}
 				</form>
 			)}
 
 			<button
-				className="absolute left-1/2 transform -translate-x-1/2 bottom-32 bg-primary text-2xl text-white rounded-2xl py-3 px-24 shadow-2xl"
+				className="bg-primary text-lg font-semibold text-white rounded-xl py-2.5 mt-6 shadow-2xl"
 				onClick={(e) => {
 					e.preventDefault();
 					if (state.formType === TransactionTypes.deposit) {

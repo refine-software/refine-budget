@@ -19,7 +19,7 @@ const controls: Control[] = [
 const Control = () => {
 
 	return (
-		<div className="grid grid-cols-2 gap-5">
+		<div className="grid grid-cols-2 gap-3">
 			{controls.map((control) => {
 				return ControlBtn({ control })
 			})}
@@ -31,12 +31,12 @@ const ControlBtn = ({ control }: { control: Control }) => {
 	const navigate = useNavigate();
 	return (
 		<button
-			className="flex flex-col justify-center items-center gap-4 bg-grey rounded-3xl w-full aspect-square font-bold text-lg shadow-2xl cursor-pointer hover:bg-primary"
+			className="flex flex-col justify-center items-center gap-3 p-2 bg-grey rounded-3xl w-full aspect-square font-bold text-lg shadow-2xl cursor-pointer hover:bg-primary"
 			onClick={() => navigate(control.location)}
 			key={control.id}
 		>
-			<img src={control.image} alt={control.title} className="h-[50%]" />
-			<p>{control.title}</p>
+			<img src={control.image} alt={control.title} className={`h-[50%] ${control.id === 3 && "my-2"}`} />
+			<div className="h-14 flex justify-center items-center">{control.title}</div>
 		</button>
 	)
 }

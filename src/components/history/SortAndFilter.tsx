@@ -15,7 +15,6 @@ const SortAndFilter = memo(({ setSort, setDepositTypes, setTransactionType }: Pr
 	const [openFilter, setOpenFilter] = useState(false);
 	const [openSort, setOpenSort] = useState(false);
 
-	// Local filter states (used inside modals until Apply is clicked)
 	const [transactionTypeInput, setTransactionTypeInput] = useState<TransactionTypes | "all">("all");
 	const [depositTypesInput, setDepositTypesInput] = useState<DepositTypes[]>([]);
 	const [sortInput, setSortInput] = useState<SortTypes>(SortTypes.dateDesc);
@@ -35,9 +34,6 @@ const SortAndFilter = memo(({ setSort, setDepositTypes, setTransactionType }: Pr
 		<div className="flex justify-between">
 			<button className="w-10" onClick={() => setOpenFilter(true)}>
 				<img src={filter} alt="Open filters" />
-			</button>
-			<button className="bg-primary px-3 rounded">
-				Delete Last Transaction
 			</button>
 			<button className="w-10" onClick={() => setOpenSort(true)}>
 				<img src={sort} alt="Open sort options" />

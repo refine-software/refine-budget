@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Budget } from "../../types";
 import LoadingSpinner from "../ui/LoadingSpinner";
+import { readableNumber } from "../../utils";
 
 type Props = {
     func: () => Promise<Budget> | null;
@@ -18,7 +19,7 @@ const BudgetMoney = ({ func }: Props) => {
     }
 
     return (
-        <p className="text-primary text-3xl font-bold">{data?.amount} IQD</p>
+        <p className="text-primary text-3xl font-bold">{readableNumber(data?.amount as number)} IQD</p>
     )
 }
 

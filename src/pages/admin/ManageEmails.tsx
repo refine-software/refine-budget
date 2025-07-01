@@ -36,10 +36,10 @@ const ManageEmails = () => {
 	});
 
 	return (
-		<div className="flex flex-col items-center gap-8">
-			<div className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center mb-3 font-bold text-neutral-400">
+		<div className="flex flex-col items-center gap-14 mt-4">
+			<div className="border-1 border-primary rounded-2xl flex justify-between items-center font-bold text-neutral-400 px-4 py-2">
 				<input
-					className="ml-4 focus:border-none focus:outline-none active:border-none active:outline-none"
+					className="w-full focus:border-none focus:outline-none active:border-none active:outline-none"
 					type="email"
 					placeholder="Enter email"
 					value={newEmail}
@@ -52,7 +52,7 @@ const ManageEmails = () => {
 						addMutation.mutate(newEmail.trim());
 					}}
 					disabled={addMutation.isPending}
-					className="mr-4 cursor-pointer p-2"
+					className="cursor-pointer p-2"
 				>
 					{
 						addMutation.isPending ?
@@ -62,39 +62,41 @@ const ManageEmails = () => {
 
 				</button>
 			</div>
-			<h2 className="font-bold text-2xl">Allowed Emails</h2>
-			{isPending ? (
-				<LoadingSpinner size="big" />
-			) : (
-				<ul className="flex flex-col gap-4 text-neutral-200">
-					{data?.length === 0 && (
-						<p>No allowed emails yet.</p>
-					)}
-					{data?.map(({ id, email }) => (
-						<li
-							key={id}
-							className="border-1 border-primary rounded-2xl w-85 h-15 flex justify-between items-center font-bold px-4"
-						>
-							<span>{email}</span>
-							<button
-								onClick={() => deleteMutation.mutate(id)}
-								disabled={deletingId === id}
-								className="cursor-pointer p-2"
+			<div className="w-full flex flex-col justify-center items-center gap-8">
+				<h2 className="font-bold text-2xl">Allowed Emails</h2>
+				{isPending ? (
+					<LoadingSpinner size="big" />
+				) : (
+					<ul className="w-full flex flex-col gap-4 text-neutral-200">
+						{data?.length === 0 && (
+							<p>No allowed emails yet.</p>
+						)}
+						{data?.map(({ id, email }) => (
+							<li
+								key={id}
+								className="w-full flex justify-between items-center border-1 border-primary rounded-2xl font-semibold px-4 py-2"
 							>
-								{deletingId === id ? (
-									<LoadingSpinner size="mid" />
-								) : (
-									<img
-										className=""
-										src={deleteUserIcon}
-										alt="delete user button"
-									/>
-								)}
-							</button>
-						</li>
-					))}
-				</ul>
-			)}
+								<span>{email}</span>
+								<button
+									onClick={() => deleteMutation.mutate(id)}
+									disabled={deletingId === id}
+									className="cursor-pointer p-2 w-10 aspect-square"
+								>
+									{deletingId === id ? (
+										<LoadingSpinner size="mid" />
+									) : (
+										<img
+											className=""
+											src={deleteUserIcon}
+											alt="delete user button"
+										/>
+									)}
+								</button>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
 		</div>
 	);
 };

@@ -14,6 +14,13 @@ type InputProps = {
     required: boolean;
 }
 
+type TextAreaProps = {
+    label: string;
+    value?: string;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    required: boolean;
+}
+
 type SelectProps = {
     label: string;
     value?: string;
@@ -31,6 +38,19 @@ export const Input = ({ label, value, onChange, type = "text", required = false 
             onChange={onChange}
             required={required}
             className="w-full text-primary border border-primary rounded-xl p-2"
+            placeholder={`Enter ${label.toLowerCase()}`}
+        />
+    </div>
+);
+
+export const TextArea = ({ label, value, onChange, required = false }: TextAreaProps) => (
+    <div className="flex flex-col gap-2">
+        <label className="block">{label}</label>
+        <textarea
+            value={value}
+            onChange={onChange}
+            required={required}
+            className="w-full !h-32 text-primary border border-primary rounded-xl p-2"
             placeholder={`Enter ${label.toLowerCase()}`}
         />
     </div>

@@ -65,10 +65,9 @@ const Profile = () => {
 				/>
 			</div>
 
-			<div className="flex justify-center items-center flex-col gap-4 mt-4">
+			<div className="w-full flex justify-center items-center flex-col gap-4 mt-4">
 				<input
-					style={{ textAlign: "center" }}
-					className="border-1 border-primary py-3 px-6 rounded-xl text-center"
+					className="w-[80%] border-1 border-primary py-3 px-6 rounded-xl text-center"
 					type="text"
 					placeholder={user.name}
 					onChange={(e) => setNewUsername(e.target.value)}
