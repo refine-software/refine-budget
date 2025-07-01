@@ -18,7 +18,7 @@ const getAdminUsers = async (): Promise<User[]> => {
 
 const editUserDebt = async (
 	debt: number,
-	user_id: number
+	userId: number
 ): Promise<boolean> => {
 	try {
 		const accTokenObj = getAccessToken();
@@ -26,7 +26,7 @@ const editUserDebt = async (
 
 		await api.patch(
 			`/admin/user/debt`,
-			{ debt, user_id },
+			{ debt, user_id: userId },
 			{
 				headers: {
 					Authorization: `Bearer ${accTokenObj.accessToken}`,
