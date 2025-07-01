@@ -11,9 +11,13 @@
 - [x] Click on image to change it.
 - [x] Set as user functionality doesn't have an endpoint.
 - [x] The user card is chopped.
-- [ ] Invalidate history on new transaction.
-- [ ] Handle edit debt in the admin users cards.
-- [ ] Add the verified check mark in the user card.
+- [x] Invalidate history on new transaction.
+- [x] Handle edit debt in the admin users cards.
+- [x] Add the verified check mark in the user card.
+- [ ] Delete last transaction functionality.
+- [ ] Last and first page pagination buttons, to go all the way to the end and all the way to the start.
+- [ ] Redesign the profile page and make it more functional.
+- [ ] Check all the possible invalidations for example when the user name changes the admin users needs to be invalidated, and other invalidations.
 
 ## Bugs
 
