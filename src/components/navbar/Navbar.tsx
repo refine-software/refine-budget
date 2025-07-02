@@ -2,6 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { AuthContext } from "../../store/auth-context";
 import { Role } from "../../types";
+import home from "/home.svg";
+import homeActive from "/home-active.svg";
+import history from "/history.svg";
+import historyActive from "/history-active.svg";
+import profile from "/profile.svg";
+import profileActive from "/profile-active.svg";
+import control from "/control.svg";
+import controlActive from "/control-active.svg";
 
 const Navbar = () => {
 	const auth = useContext(AuthContext);
@@ -18,30 +26,17 @@ const Navbar = () => {
 			<div className="py-5 px-8 flex justify-around gap-4">
 				<NavLink to={"/"}>
 					{({ isActive }) => (
-						<img
-							src={isActive ? "./public/home-active.svg" : "/public/home.svg"}
-							alt="Home"
-						/>
+						<img src={isActive ? homeActive : home} alt="Home" />
 					)}
 				</NavLink>
 				<NavLink to={"/history"}>
 					{({ isActive }) => (
-						<img
-							src={
-								isActive ? "/public/history-active.svg" : "/public/history.svg"
-							}
-							alt="history"
-						/>
+						<img src={isActive ? historyActive : history} alt="history" />
 					)}
 				</NavLink>
 				<NavLink to={"/profile"}>
 					{({ isActive }) => (
-						<img
-							src={
-								isActive ? "/public/profile-active.svg" : "/public/profile.svg"
-							}
-							alt="Home"
-						/>
+						<img src={isActive ? profileActive : profile} alt="Home" />
 					)}
 				</NavLink>
 				{isAdmin && (
@@ -64,8 +59,8 @@ const Navbar = () => {
 											["/users", "/transactions", "/manage-emails"].includes(
 												location.pathname,
 											)
-											? "/public/control-active.svg"
-											: "/public/control.svg"
+											? controlActive
+											: control
 									}
 									alt="Control"
 								/>
