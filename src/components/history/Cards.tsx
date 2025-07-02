@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, memo } from "react";
 import { Transaction, TransactionTypes } from "../../types";
 import { strftime } from "@sharon-xa/strftime";
 
-const Card = memo(({ transaction }: { transaction: Transaction }) => {
+const Card = memo(({ transaction, lastTransactionId }: { transaction: Transaction, lastTransactionId: number }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [shortText, setShortText] = useState("");
@@ -25,8 +25,15 @@ const Card = memo(({ transaction }: { transaction: Transaction }) => {
 
     return (
         <div className={`min-h-56 bg-card-bg rounded-3xl p-5 flex flex-col gap-5 shadow-xl transition-all duration-300`} key={transaction.id}>
-            <div className={`capitalize text-2xl font-bold ${isDeposit ? "text-green" : "text-red"}`}>
-                {transaction.transaction_type}
+            <div className="flex justify-between items-center">
+                <p className={`capitalize text-2xl font-bold ${isDeposit ? "text-green" : "text-red"}`}>
+                    {transaction.transaction_type}
+                </p>
+                {transaction.id === lastTransactionId && (
+                    <button className="h-9 w-9">
+                        <img src="/delete-trans.svg" alt="delete transaction" className="w-full h-full" />
+                    </button>
+                )}
             </div>
 
             <div
@@ -71,11 +78,11 @@ const Card = memo(({ transaction }: { transaction: Transaction }) => {
     );
 });
 
-const Cards = memo(({ transactions }: { transactions: Transaction[] }) => {
+const Cards = memo(({ transactions, lastTransactionId }: { transactions: Transaction[], lastTransactionId: number }) => {
     return (
         <div className="flex flex-col gap-6">
             {transactions.map(transaction => (
-                <Card key={transaction.id} transaction={transaction} />
+                <Card key={transaction.id} transaction={transaction} lastTransactionId={lastTransactionId} />
             ))}
         </div>
     );

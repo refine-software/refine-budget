@@ -102,6 +102,7 @@ export type Metadata = {
 	first_page: number;
 	last_page: number;
 	total_records: number;
+	last_transaction_id: number;
 }
 
 export type TransactionsRes = {

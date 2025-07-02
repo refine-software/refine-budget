@@ -42,7 +42,7 @@ const History = () => {
 				</div>
 			)}
 			{!isPending && data && data.transactions?.length > 0 && (
-				<Cards transactions={data.transactions} />
+				<Cards transactions={data.transactions} lastTransactionId={data.metadata.last_transaction_id} />
 			)}
 
 			{/* Always show pagination if metadata exists */}
