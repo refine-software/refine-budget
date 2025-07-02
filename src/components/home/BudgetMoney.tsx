@@ -9,6 +9,7 @@ type Props = {
 
 const BudgetMoney = ({ func }: Props) => {
     const { isPending, isError, data, error } = useQuery({ queryKey: ["budget"], queryFn: func });
+    console.log(data);
 
     if (isPending) {
         return <LoadingSpinner customSize="h-9 border-4" />
@@ -19,7 +20,7 @@ const BudgetMoney = ({ func }: Props) => {
     }
 
     return (
-        <p className="text-primary text-3xl font-bold">{readableNumber(data?.amount as number)} IQD</p>
+        <p className="text-primary text-3xl font-bold">{readableNumber(data?.amount)} IQD</p>
     )
 }
 

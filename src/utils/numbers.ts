@@ -1,4 +1,6 @@
-export function readableNumber(num: number): string {
+export function readableNumber(num: number | undefined): string {
+    console.log(num);
+    if (num === undefined) return "0";
     const str = num.toString();
 
     if (str.length <= 3) return str;

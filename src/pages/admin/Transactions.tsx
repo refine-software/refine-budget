@@ -81,7 +81,8 @@ const Transactions = () => {
 			await withdrawTransaction(parseInt(state.amount), state.details);
 			dispatch({ type: "RESET_WITHDRAW" });
 			setErrorMessage("");
-			queryClient.invalidateQueries({ queryKey: ["budget", "transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
+			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
 		} catch (err) {
 			setErrorMessage(`Failed to process transaction: ${err}`);
 		}
@@ -98,7 +99,8 @@ const Transactions = () => {
 			});
 			dispatch({ type: "RESET_DEPOSIT" });
 			setErrorMessage("");
-
+			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
+			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
 		} catch (err) {
 			setErrorMessage(`Failed to process transaction: ${err}`);
 		}

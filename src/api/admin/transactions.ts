@@ -40,3 +40,18 @@ export const withdrawTransaction = async (
 	);
 	return res.status;
 };
+
+export const deleteLastTransaction = async (): Promise<number> => {
+	const accTokenObj = getAccessToken();
+	if (accTokenObj === null) throw new Error("you're not authorized");
+
+	const res = await api.delete(
+		"/admin/transaction/last-transaction",
+		{
+			headers: {
+				Authorization: `Bearer ${accTokenObj.accessToken}`,
+			},
+		}
+	);
+	return res.status;
+}

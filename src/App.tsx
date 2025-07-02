@@ -19,14 +19,14 @@ import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/auth/ResetPasswordConfirm";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchOnWindowFocus: false,
-			refetchOnReconnect: false,
 			refetchOnMount: false,
-			staleTime: Infinity,
+			staleTime: 0,
 		}
 	}
 });
@@ -132,6 +132,7 @@ function App() {
 					<RouterProvider router={router} />
 				</RegisterProvider>
 			</AuthContextProvider>
+			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>
 	);
 }
