@@ -4,7 +4,8 @@ import SortAndFilter from "../components/history/SortAndFilter";
 import Cards from "../components/history/Cards";
 import Pagination from "../components/history/Pagination";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import { useTransactions } from "../hooks/useTransactions";
+import { useQuery } from "@tanstack/react-query";
+import { getTransactions } from "../api/transactions";
 
 const History = () => {
 	const [query, setQuery] = useState({
@@ -19,7 +20,23 @@ const History = () => {
 		setQuery((prev) => ({ ...prev, ...updates }));
 	}, []);
 
-	const { isPending, isError, data, error } = useTransactions(query);
+	const { isPending, isError, data, error } = useQuery({
+		queryKey: [
+			"transactions",
+			query.page,
+			query.limit,
+			query.sort,
+			query.transactionType,
+			query.depositTypes,
+		],
+		queryFn: () => getTransactions({
+			page: query.page,
+			limit: query.limit,
+			sort: query.sort,
+			transactionType: query.transactionType,
+			depositTypes: query.depositTypes,
+		}),
+	});
 
 	return (
 		<div className="flex flex-col gap-8">

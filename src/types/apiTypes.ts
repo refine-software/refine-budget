@@ -73,13 +73,6 @@ export type withdrawReq = {
 	details: string;
 };
 
-export type TransactionsReqQueries = {
-	page: number;
-	limit: number;
-	sort: SortTypes;
-	transactionType?: TransactionTypes;
-	depositTypes?: DepositTypes[];
-};
 
 export type Transaction = {
 	id: number;

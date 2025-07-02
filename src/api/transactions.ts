@@ -2,28 +2,35 @@ import axios, { AxiosError } from "axios";
 import { getAccessToken } from "../utils";
 import api from "./axiosConfig";
 import {
-	TransactionsReqQueries,
+	DepositTypes,
+	SortTypes,
 	TransactionsRes,
 	TransactionTypes,
 } from "../types";
 
-export async function getTransactions(
-	this: TransactionsReqQueries
-): Promise<TransactionsRes> {
+export type TransactionsReqQueries = {
+	page: number;
+	limit: number;
+	sort: SortTypes;
+	transactionType?: TransactionTypes;
+	depositTypes?: DepositTypes[];
+};
+
+export async function getTransactions(req: TransactionsReqQueries): Promise<TransactionsRes> {
 	const accTokenObj = getAccessToken();
 	if (!accTokenObj) throw new Error("You're not authorized");
 	const queries: string[] = [];
 
-	if (this.page) queries.push("page=" + this.page);
-	if (this.limit) queries.push("limit=" + this.limit);
-	if (this.sort) queries.push("sort=" + this.sort);
-	if (this.transactionType) queries.push("trans-type=" + this.transactionType);
+	if (req.page) queries.push("page=" + req.page);
+	if (req.limit) queries.push("limit=" + req.limit);
+	if (req.sort) queries.push("sort=" + req.sort);
+	if (req.transactionType) queries.push("trans-type=" + req.transactionType);
 	if (
-		this.depositTypes &&
-		this.transactionType !== TransactionTypes.withdrawal &&
-		this.depositTypes.length > 0
+		req.depositTypes &&
+		req.transactionType !== TransactionTypes.withdrawal &&
+		req.depositTypes.length > 0
 	) {
-		this.depositTypes.forEach((depType) =>
+		req.depositTypes.forEach((depType) =>
 			queries.push("deposit-type=" + depType)
 		);
 	}
