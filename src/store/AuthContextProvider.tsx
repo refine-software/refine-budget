@@ -72,42 +72,58 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 
 	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	const scheduleRefresh = useCallback(async () => {
+	// This function performs a refresh and reschedules itself
+	const refreshNow = useCallback(async () => {
+		try {
+			console.log("Forcing token refresh...");
+
+			const res = await refreshTokens();
+			if (axios.isAxiosError(res) || res instanceof Error) {
+				throw res;
+			}
+
+			// Set new access token and expiration time
+			setAccessToken({
+				accessToken: res.access_token,
+				accessTokenExp: new Date(Date.now() + 600_000), // 10 minutes
+			});
+
+			// Clear old timer and reschedule
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
+			scheduleRefresh();
+		} catch (err) {
+			console.error("Token refresh failed:", err);
+			setAuthenticated(false);
+			setLoading(false);
+			removeAllStorage();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const scheduleRefresh = useCallback(() => {
 		const accessToken = getAccessToken();
 		if (!accessToken) {
-			console.warn("No access token available for refresh scheduling");
+			console.warn("No access token available for scheduling.");
 			return;
 		}
 
-		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 10_000;
+		// Ensure accessTokenExp is a valid Date
+		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 10_000; // 10 sec before expiry
 		console.log("Scheduled token refresh in:", delay, "ms");
 
 		if (delay <= 0) {
-			console.warn("Delay for token refresh is non-positive, skipping");
+			console.warn("Token is expiring or expired, refreshing now.");
+			refreshNow();
 			return;
 		}
 
-		timeoutRef.current = setTimeout(async () => {
-			try {
-				console.log("Attempting to refresh token");
-				const res = await refreshTokens();
-				setAccessToken({
-					accessToken: res.access_token,
-					accessTokenExp: new Date(Date.now() + 600_000),
-				});
-
-				scheduleRefresh(); // Reschedule
-			} catch (err) {
-				console.error("Error refreshing token:", err);
-				setAuthenticated(false);
-				setLoading(false);
-			}
+		timeoutRef.current = setTimeout(() => {
+			refreshNow();
 		}, delay);
-	}, []);
-
+	}, [refreshNow]);
 
 	useEffect(() => {
-		if (!authenticated) return; // ✅ only schedule if logged in
+		if (!authenticated) return;
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);
 		scheduleRefresh();
 
