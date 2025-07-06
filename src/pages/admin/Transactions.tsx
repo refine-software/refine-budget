@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DepositTypes, TransactionTypes, User } from "../../types";
 import { getAdminUsers } from "../../api/admin/users";
 import {
@@ -7,6 +7,7 @@ import {
 	withdrawTransaction,
 } from "../../api/admin/transactions";
 import { Input, SelectField, TextArea } from "../../components/TransactionsForm";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type TextAreaEvent = React.ChangeEvent<HTMLTextAreaElement>;
@@ -75,35 +76,49 @@ const Transactions = () => {
 		queryFn: getAdminUsers,
 	});
 
-	const handleWithdrawSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		try {
-			await withdrawTransaction(parseInt(state.amount), state.details);
-			dispatch({ type: "RESET_WITHDRAW" });
-			setErrorMessage("");
-			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
-			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
-		} catch (err) {
-			setErrorMessage(`Failed to process transaction: ${err}`);
-		}
-	};
-
-	const handleDepositSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		try {
-			await depositTransaction({
-				amount: parseInt(state.amount),
-				deposit_type: state.depositType,
-				details: state.details,
-				subscriber_id: state.subscriberId || undefined,
-			});
+	const depositMutation = useMutation({
+		mutationFn: depositTransaction,
+		onSuccess: () => {
 			dispatch({ type: "RESET_DEPOSIT" });
 			setErrorMessage("");
-			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
-			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
-		} catch (err) {
+			queryClient.invalidateQueries({ queryKey: ["budget"] });
+			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+		},
+		onError: (err) => {
 			setErrorMessage(`Failed to process transaction: ${err}`);
-		}
+		},
+	});
+
+	const withdrawMutation = useMutation({
+		mutationFn: (amountAndDetails: { amount: number; details: string }) =>
+			withdrawTransaction(amountAndDetails.amount, amountAndDetails.details),
+		onSuccess: () => {
+			dispatch({ type: "RESET_WITHDRAW" });
+			setErrorMessage("");
+			queryClient.invalidateQueries({ queryKey: ["budget"] });
+			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+		},
+		onError: (err) => {
+			setErrorMessage(`Failed to process transaction: ${err}`);
+		},
+	});
+
+	const handleWithdrawSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		withdrawMutation.mutate({
+			amount: parseInt(state.amount),
+			details: state.details,
+		});
+	};
+
+	const handleDepositSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		depositMutation.mutate({
+			amount: parseInt(state.amount),
+			deposit_type: state.depositType,
+			details: state.details,
+			subscriber_id: state.subscriberId || undefined,
+		});
 	};
 
 	const depositTypeOptions = Object.values(DepositTypes).map((val) => ({
@@ -214,7 +229,8 @@ const Transactions = () => {
 			)}
 
 			<button
-				className="bg-primary text-lg font-semibold text-white rounded-xl py-2.5 mt-6 shadow-2xl"
+				className={`h-14 bg-primary text-xl font-semibold text-white rounded-xl py-2.5 mt-6 shadow-2xl ${depositMutation.isPending || withdrawMutation.isPending && "bg-primary-dim"}`}
+				disabled={depositMutation.isPending || withdrawMutation.isPending}
 				onClick={(e) => {
 					e.preventDefault();
 					if (state.formType === TransactionTypes.deposit) {
@@ -224,7 +240,7 @@ const Transactions = () => {
 					}
 				}}
 			>
-				Confirm
+				{depositMutation.isPending || withdrawMutation.isPending ? <LoadingSpinner size="mid" /> : "Confirm"}
 			</button>
 		</div>
 	);
