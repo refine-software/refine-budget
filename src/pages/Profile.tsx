@@ -1,10 +1,8 @@
 import { useState, useContext } from "react";
 import { updateUsername, updateProfileImage, logoutUser } from "../api";
-import { useNavigate } from "react-router";
 import { AuthContext } from "../store/auth-context";
 
 const Profile = () => {
-	const navigate = useNavigate();
 	const auth = useContext(AuthContext);
 	const { user, setUserCtx } = auth;
 	const [newUsername, setNewUsername] = useState("");
@@ -12,7 +10,6 @@ const Profile = () => {
 	const handleLogout = () => {
 		logoutUser();
 		auth.logout();
-		navigate("/login");
 	};
 
 	const handleChangePicture = async (

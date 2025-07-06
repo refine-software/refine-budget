@@ -99,6 +99,8 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 				scheduleRefresh(); // Reschedule
 			} catch (err) {
 				console.error("Error refreshing token:", err);
+				setAuthenticated(false);
+				setLoading(false);
 			}
 		}, delay);
 	}, []);
