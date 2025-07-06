@@ -18,6 +18,7 @@
 - [ ] Last and first page pagination buttons, to go all the way to the end and all the way to the start.
 - [ ] Redesign the profile page and make it more functional.
 - [ ] Check all the possible invalidations for example when the user name changes the admin users needs to be invalidated, and other invalidations.
+- [ ] When logging out, we need to check the response of the logout first then logout from the frontend.
 
 ## Bugs
 
