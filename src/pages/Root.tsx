@@ -2,13 +2,11 @@ import { useContext } from "react";
 import { Outlet } from "react-router";
 import Navbar from "../components/navbar/Navbar";
 import Header from "../components/navbar/Header";
-import useTokenRefresher from "../hooks/useTokenRefresher";
 import { AuthContext } from "../store/auth-context";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const Root = () => {
 	const auth = useContext(AuthContext);
-	useTokenRefresher();
 
 	if (auth.loading) {
 		return (
