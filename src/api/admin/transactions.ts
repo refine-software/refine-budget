@@ -26,11 +26,10 @@ export const withdrawTransaction = async (transactionData: {
 }): Promise<number> => {
 	const accTokenObj = getAccessToken();
 	if (accTokenObj === null) throw new Error("you're not authorized");
+	console.log(transactionData);
 	const res = await api.post(
 		"/admin/transaction/withdrawal",
-		{
-			transactionData,
-		},
+		transactionData,
 		{
 			headers: {
 				Authorization: `Bearer ${accTokenObj.accessToken}`,
