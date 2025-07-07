@@ -39,7 +39,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 							/>
 						</span>
 					</div>
-					<p>{user.email}</p>
+					<p className="text-sm">{user.email}</p>
 				</div>
 			</div>
 
