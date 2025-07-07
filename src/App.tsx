@@ -19,7 +19,6 @@ import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/auth/ResetPasswordConfirm";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import TransactionDetails from "./pages/TransactionDetails";
 import TransactionCards from "./components/history/TransactionCards";
 
@@ -144,7 +143,6 @@ function App() {
 					<RouterProvider router={router} />
 				</RegisterProvider>
 			</AuthContextProvider>
-			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>
 	);
 }
