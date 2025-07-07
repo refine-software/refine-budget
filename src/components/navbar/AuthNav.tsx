@@ -7,7 +7,7 @@ const AuthNav = () => {
 				to="/login"
 				className={({ isActive }) =>
 					`${isActive ? "bg-primary" : ""
-					} block border-1 border-primary w-32 text-center px-4 py-2 `
+					} block border-1 border-primary w-32 text-center px-4 py-2 rounded-lg`
 				}
 			>
 				Login
@@ -17,7 +17,7 @@ const AuthNav = () => {
 				to="/register"
 				className={({ isActive }) =>
 					`${isActive ? "bg-primary" : ""
-					} block border-1 border-primary w-32 text-center px-4 py-2 `
+					} block border-1 border-primary w-32 text-center px-4 py-2 rounded-lg`
 				}
 			>
 				Register
