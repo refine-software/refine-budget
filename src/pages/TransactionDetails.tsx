@@ -41,12 +41,6 @@ const TransactionDetails = () => {
         <div className="relative flex flex-col justify-center gap-8 p-2">
             <h2 className="text-2xl font-bold text-white text-center">Transaction</h2>
 
-            {deleteLastTransMutation.isPending && (
-                <div className="absolute inset-0 bg-black/60 z-10 flex items-center justify-center rounded-2xl">
-                    <LoadingSpinner size="mid" />
-                </div>
-            )}
-
             <div className="flex flex-col gap-6 text-white text-xl leading-relaxed">
                 <div>
                     <p className="text-sm uppercase text-gray-400 mb-1">Transaction Type</p>
@@ -91,49 +85,11 @@ const TransactionDetails = () => {
                     onClick={() => deleteLastTransMutation.mutate()}
                     disabled={deleteLastTransMutation.isPending}
                 >
-                    Delete
+                    {deleteLastTransMutation.isPending ? <LoadingSpinner customSize="h-7 border-4" /> : "Delete"}
                 </button>
             )}
         </div>
     );
-
-    // return (
-    //     <div className="relative flex flex-col gap-4 bg-[#2A2A2A] outline-2 outline-[#515151] rounded-2xl p-5 shadow-2xl">
-    //         <div className="flex justify-between items-center">
-    //             <h2 className="text-2xl font-bold text-white">
-    //                 Transaction
-    //             </h2>
-    //             {data.id === lastTransactionId && (
-    //                 <button
-    //                     className="text-white px-2 py-2 rounded hover:bg-red/90 disabled:opacity-50"
-    //                     onClick={() => deleteLastTransMutation.mutate()}
-    //                     disabled={deleteLastTransMutation.isPending}
-    //                 >
-    //                     <img src="/delete-trans.svg" alt="delete transaction" className="w-full h-full" />
-    //                 </button>
-    //             )}
-    //             {deleteLastTransMutation.isPending && (
-    //                 <div className="absolute inset-0 bg-black/50 z-50 rounded-3xl pointer-events-none">
-    //                     <LoadingSpinner size="mid" />
-    //                 </div>
-    //             )}
-    //         </div>
-
-    //         <div className="flex flex-col gap-2 text-white-75 text-lg">
-    //             <p><strong>Type:</strong> <span className={isDeposit ? "text-green" : "text-red"}>{data.transaction_type}</span></p>
-    //             <p><strong>Amount:</strong> {readableNumber(data.amount)} IQD</p>
-    //             {data.deposit_type?.deposit_type && (
-    //                 <p><strong>Deposit Type:</strong> {data.deposit_type.deposit_type}</p>
-    //             )}
-    //             {data.subscriber && (
-    //                 <p><strong>Subscriber:</strong> {data.subscriber}</p>
-    //             )}
-    //             <p><strong>Made By:</strong> {data.made_by}</p>
-    //             <p><strong>Date:</strong> {err ? data.transaction_date : formattedDate}</p>
-    //             <p><strong>Description:</strong> {data.details}</p>
-    //         </div>
-    //     </div>
-    // );
 };
 
 export default TransactionDetails;
