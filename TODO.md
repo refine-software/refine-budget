@@ -15,7 +15,7 @@
 - [x] Handle edit debt in the admin users cards.
 - [x] Add the verified check mark in the user card.
 - [x] Delete last transaction functionality.
-- [ ] Last and first page pagination buttons, to go all the way to the end and all the way to the start.
+- [x] Last and first page pagination buttons, to go all the way to the end and all the way to the start.
 - [ ] Redesign the profile page and make it more functional.
 - [ ] Check all the possible invalidations for example when the user name changes the admin users needs to be invalidated, and other invalidations.
 - [ ] When logging out, we need to check the response of the logout first then logout from the frontend.
@@ -25,5 +25,5 @@
 - [x] Sometimes the front sends refresh request for no reason (investigate this).
 - [x] On initial page load the role isn't set.
 - [x] Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
-- [ ] On initial page load the admin isn't set properly (when the user is admin the controls button in the nav doesn't show up).
-- [ ] When spaming the confirm button on the admin transactions page that will result in multi request to the backend, which will create multiple transactions.
+- [x] On initial page load the admin isn't set properly (when the user is admin the controls button in the nav doesn't show up).
+- [x] When spaming the confirm button on the admin transactions page that will result in multi request to the backend, which will create multiple transactions.
