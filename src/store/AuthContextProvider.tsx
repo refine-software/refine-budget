@@ -10,10 +10,10 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [role, setRole] = useState<Role>(Role.USER);
 	const [user, setUser] = useState<User>({} as User);
+
 	const unauthenticate = () => {
 		setAuthenticated(false);
 		setUser({} as User);
-		setRole(Role.USER);
 		removeAllStorage();
 	};
 
@@ -32,9 +32,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	const tryRefresh = async () => {
 		try {
 			const res = await refreshTokens();
-			if (axios.isAxiosError(res) || res instanceof Error) {
-				return unauthenticate();
-			}
 
 			setAccessToken({
 				accessToken: res.access_token,
@@ -57,10 +54,11 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 			const deviceId = getDeviceId();
 			if (!deviceId) return unauthenticate();
 
+			// TODO: ping backend to make sure everything is working as expected.
+			// when token exists and isn't expired it will act as if we're authentcated and everything is fine,
+			// the problem with this behavior would be the case of which the token is valid but the front can't access the backend from some reason.
 			const token = getAccessToken();
-			if (token && token.accessTokenExp > new Date()) {
-				return handleAuthenticated();
-			}
+			if (token && token.accessTokenExp > new Date()) return handleAuthenticated();
 
 			await tryRefresh();
 		};
