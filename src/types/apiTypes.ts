@@ -80,7 +80,7 @@ export type Transaction = {
 	made_by: string;
 	transaction_date: string;
 	transaction_type: TransactionTypes;
-	description: string;
+	details: string;
 	deposit_type: {
 		deposit_type: string;
 		valid: boolean;

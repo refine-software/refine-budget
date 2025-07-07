@@ -20,6 +20,8 @@ import VerifyOtp from "./pages/auth/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/auth/ResetPasswordConfirm";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import TransactionDetails from "./pages/TransactionDetails";
+import TransactionCards from "./components/history/TransactionCards";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -52,6 +54,16 @@ const router = createBrowserRouter([
 						<History />
 					</ProtectedRoute>
 				),
+				children: [
+					{
+						index: true,
+						element: <TransactionCards />,
+					},
+					{
+						path: ":id",
+						element: <TransactionDetails />,
+					},
+				]
 			},
 			{
 				path: "profile",

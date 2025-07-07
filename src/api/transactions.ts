@@ -1,9 +1,9 @@
-import axios, { AxiosError } from "axios";
 import { getAccessToken } from "../utils";
 import api from "./axiosConfig";
 import {
 	DepositTypes,
 	SortTypes,
+	Transaction,
 	TransactionsRes,
 	TransactionTypes,
 } from "../types";
@@ -35,18 +35,22 @@ export async function getTransactions(req: TransactionsReqQueries): Promise<Tran
 		);
 	}
 
-	try {
-		const res = await api.get("/transaction/history?" + queries.join("&"), {
-			headers: {
-				Authorization: `Bearer ${accTokenObj.accessToken}`,
-			},
-		});
-		return res.data as TransactionsRes;
-	} catch (err) {
-		if (axios.isAxiosError(err)) {
-			throw err as AxiosError;
-		} else {
-			throw err as Error;
-		}
-	}
+	const res = await api.get("/transaction/history?" + queries.join("&"), {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+		},
+	});
+	return res.data as TransactionsRes;
+}
+
+export async function getTransactionById(transactionId: number): Promise<Transaction> {
+	const accTokenObj = getAccessToken();
+	if (!accTokenObj) throw new Error("You're not authorized");
+
+	const res = await api.get("/transaction/" + transactionId, {
+		headers: {
+			Authorization: `Bearer ${accTokenObj.accessToken}`,
+		},
+	});
+	return res.data as Transaction;
 }
