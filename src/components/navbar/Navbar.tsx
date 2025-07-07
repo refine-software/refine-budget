@@ -23,7 +23,7 @@ const Navbar = () => {
 
 	return (
 		<nav className="bg-primary fixed w-full overflow-hidden bottom-0 z-30 ">
-			<div className="py-4 px-6 flex justify-around gap-4">
+			<div className="h-20 px-7 flex justify-between items-center gap-4">
 				<NavLink to={"/"}>
 					{({ isActive }) => (
 						<img src={isActive ? homeActive : home} alt="Home" />
