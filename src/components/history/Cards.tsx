@@ -30,7 +30,6 @@ const Card = memo(({ transaction, lastTransactionId }: { transaction: Transactio
     const deleteLastTransMutation = useMutation({
         mutationFn: deleteLastTransaction,
         onSuccess: () => {
-            console.log("On Success");
             queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
             queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
         },

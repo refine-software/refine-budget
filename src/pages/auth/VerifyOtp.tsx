@@ -55,18 +55,12 @@ const VerifyOtp = () => {
         if (code.length !== 6) return;
 
         const res = await verifyAccount(email, code);
-        if (axios.isAxiosError(res)) {
-            console.log(res.response?.data.message);
-            setVerifyStatus({ status: res.status, msg: res.response?.data.message })
-        }
-        console.log("OTP submitted:", code, "for", email);
-        console.log("Status:", res);
+        if (axios.isAxiosError(res)) setVerifyStatus({ status: res.status, msg: res.response?.data.message });
         if (res === 200) navigate("/login");
     };
 
     const resendVerificationCodeSubmit = async () => {
-        const status = await resendVerificationCode(email);
-        if (status === 200) console.log("OTP SENT TO YOUR EMAIL");
+        await resendVerificationCode(email);
     }
 
     return (

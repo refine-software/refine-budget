@@ -8,10 +8,8 @@ const Login = () => {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     useEffect(() => {
-        if (auth.authenticated && !auth.loading) {
-            console.log("Authenticated Navigate to home");
+        if (auth.authenticated && !auth.loading)
             navigate("/");
-        }
     }, [auth, navigate]);
 
     return (

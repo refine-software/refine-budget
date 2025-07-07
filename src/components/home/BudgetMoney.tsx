@@ -9,7 +9,6 @@ type Props = {
 
 const BudgetMoney = ({ func }: Props) => {
     const { isPending, isError, data, error } = useQuery({ queryKey: ["budget"], queryFn: func });
-    console.log(data);
 
     if (isPending) {
         return <LoadingSpinner customSize="h-9 border-4" />

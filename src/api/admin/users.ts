@@ -12,7 +12,6 @@ const getAdminUsers = async (): Promise<User[]> => {
 			Authorization: `Bearer ${accTokenObj.accessToken}`,
 		},
 	});
-	console.log(res.data);
 	return res.data as User[];
 };
 

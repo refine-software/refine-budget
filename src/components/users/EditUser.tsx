@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import threeDots from "/three-dots.svg";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
@@ -57,10 +57,6 @@ const EditUser = ({ user }: { user: User }) => {
         await editUserRole(role, user.id);
         queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
     };
-
-    useEffect(() => {
-        console.log(error);
-    }, [error]);
 
     return (
         <div className="relative">

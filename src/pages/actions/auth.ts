@@ -47,7 +47,6 @@ export async function loginAction({ request }: { request: Request }) {
 		console.error(res);
 		return;
 	}
-	console.log(res);
 
 	setAccessToken({
 		accessToken: res.access_token,

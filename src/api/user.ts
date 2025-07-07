@@ -84,7 +84,6 @@ const logoutUser = async (): Promise<number> => {
 			"Device-ID": deviceId,
 		},
 	});
-	console.log(res);
 	return res.status;
 };
 

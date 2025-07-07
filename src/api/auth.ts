@@ -90,7 +90,6 @@ async function login({
 				},
 			}
 		);
-		console.log("Login response:", res.data);
 		return res.data as LoginResType;
 	} catch (err) {
 		if (axios.isAxiosError(err)) {
@@ -103,7 +102,6 @@ async function login({
 
 async function refreshTokens(): Promise<RefreshResType> {
 	const deviceId = getDeviceId();
-	console.log("Refreshing tokens with deviceId:", deviceId);
 	const res: AxiosResponse = await api.post(
 		"auth/refresh",
 		{},

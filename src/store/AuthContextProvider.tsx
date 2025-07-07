@@ -6,7 +6,6 @@ import axios from "axios";
 import { AuthContext } from "./auth-context";
 
 export default function AuthContextProvider({ children }: PropsWithChildren) {
-	console.log("Auth Context Provider is being executed");
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [role, setRole] = useState<Role>(Role.USER);
@@ -75,8 +74,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 	// This function performs a refresh and reschedules itself
 	const refreshNow = useCallback(async () => {
 		try {
-			console.log("Forcing token refresh...");
-
 			const res = await refreshTokens();
 			if (axios.isAxiosError(res) || res instanceof Error) {
 				throw res;
@@ -109,7 +106,6 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
 
 		// Ensure accessTokenExp is a valid Date
 		const delay = accessToken.accessTokenExp.getTime() - Date.now() - 10_000; // 10 sec before expiry
-		console.log("Scheduled token refresh in:", delay, "ms");
 
 		if (delay <= 0) {
 			console.warn("Token is expiring or expired, refreshing now.");
