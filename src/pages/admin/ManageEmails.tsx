@@ -9,7 +9,7 @@ const ManageEmails = () => {
 	const [newEmail, setNewEmail] = useState("");
 	const [deletingId, setDeletingId] = useState<number | null>(null);
 	const queryClient = useQueryClient();
-	const { isPending, isError, data, error } = useQuery({
+	const { isPending, data } = useQuery({
 		queryKey: ["emails"],
 		queryFn: getUserEmails,
 	});
@@ -56,7 +56,7 @@ const ManageEmails = () => {
 				>
 					{
 						addMutation.isPending ?
-							<LoadingSpinner size="mid" /> :
+							<LoadingSpinner customSize="h-6 border-2" /> :
 							<img src={addUserIcon} alt="adding user button" />
 					}
 
@@ -76,17 +76,17 @@ const ManageEmails = () => {
 								key={id}
 								className="w-full flex justify-between items-center border-1 border-primary rounded-2xl font-semibold px-4 py-2"
 							>
-								<span>{email}</span>
+								<span className="text-sm">{email}</span>
 								<button
 									onClick={() => deleteMutation.mutate(id)}
 									disabled={deletingId === id}
-									className="cursor-pointer p-2 w-10 aspect-square"
+									className="cursor-pointer p-2 w-9 aspect-square"
 								>
 									{deletingId === id ? (
 										<LoadingSpinner size="mid" />
 									) : (
 										<img
-											className=""
+											className="w-full h-full"
 											src={deleteUserIcon}
 											alt="delete user button"
 										/>
