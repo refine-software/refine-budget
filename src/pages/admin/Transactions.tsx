@@ -81,8 +81,8 @@ const Transactions = () => {
 		onSuccess: () => {
 			dispatch({ type: "RESET_DEPOSIT" });
 			setErrorMessage("");
-			queryClient.invalidateQueries({ queryKey: ["budget"] });
-			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
+			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
 		},
 		onError: (err) => {
 			setErrorMessage(`Failed to process transaction: ${err}`);
@@ -90,13 +90,12 @@ const Transactions = () => {
 	});
 
 	const withdrawMutation = useMutation({
-		mutationFn: (amountAndDetails: { amount: number; details: string }) =>
-			withdrawTransaction(amountAndDetails.amount, amountAndDetails.details),
+		mutationFn: withdrawTransaction,
 		onSuccess: () => {
 			dispatch({ type: "RESET_WITHDRAW" });
 			setErrorMessage("");
-			queryClient.invalidateQueries({ queryKey: ["budget"] });
-			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["budget"], exact: false, refetchType: "all" });
+			queryClient.invalidateQueries({ queryKey: ["transactions"], exact: false, refetchType: "all" });
 		},
 		onError: (err) => {
 			setErrorMessage(`Failed to process transaction: ${err}`);
@@ -229,7 +228,7 @@ const Transactions = () => {
 			)}
 
 			<button
-				className={`h-14 bg-primary text-xl font-semibold text-white rounded-xl py-2.5 mt-6 shadow-2xl ${depositMutation.isPending || withdrawMutation.isPending && "bg-primary-dim"}`}
+				className={`h-14 bg-primary text-xl font-semibold text-white rounded-xl py-2.5 mt-6 shadow-2xl ${depositMutation.isPending || withdrawMutation.isPending ? "bg-primary-dim" : ""}`}
 				disabled={depositMutation.isPending || withdrawMutation.isPending}
 				onClick={(e) => {
 					e.preventDefault();

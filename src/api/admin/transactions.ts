@@ -20,17 +20,16 @@ export const depositTransaction = async (
 	}
 };
 
-export const withdrawTransaction = async (
-	amount: number,
+export const withdrawTransaction = async (transactionData: {
+	amount: number
 	details: string
-): Promise<number> => {
+}): Promise<number> => {
 	const accTokenObj = getAccessToken();
 	if (accTokenObj === null) throw new Error("you're not authorized");
 	const res = await api.post(
 		"/admin/transaction/withdrawal",
 		{
-			amount,
-			details,
+			transactionData,
 		},
 		{
 			headers: {
