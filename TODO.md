@@ -27,3 +27,9 @@
 - [x] Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
 - [x] On initial page load the admin isn't set properly (when the user is admin the controls button in the nav doesn't show up).
 - [x] When spaming the confirm button on the admin transactions page that will result in multi request to the backend, which will create multiple transactions.
+
+## Feat
+
+- [ ] Add see password button on password inputs.
+- [ ] Add input validation.
+- [ ] Add error handling.
