@@ -1,5 +1,4 @@
 export function readableNumber(num: number | undefined): string {
-    console.log(num);
     if (num === undefined) return "0";
     const str = num.toString();
 

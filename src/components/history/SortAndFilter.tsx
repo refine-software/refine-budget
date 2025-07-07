@@ -14,7 +14,6 @@ type Props = {
 const SortAndFilter = memo(({ setSort, setDepositTypes, setTransactionType }: Props) => {
 	const [openFilter, setOpenFilter] = useState(false);
 	const [openSort, setOpenSort] = useState(false);
-
 	const [transactionTypeInput, setTransactionTypeInput] = useState<TransactionTypes | "all">("all");
 	const [depositTypesInput, setDepositTypesInput] = useState<DepositTypes[]>([]);
 	const [sortInput, setSortInput] = useState<SortTypes>(SortTypes.dateDesc);

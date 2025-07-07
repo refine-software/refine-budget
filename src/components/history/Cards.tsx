@@ -4,6 +4,7 @@ import { strftime } from "@sharon-xa/strftime";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteLastTransaction } from "../../api/admin/transactions";
 import LoadingSpinner from "../ui/LoadingSpinner";
+import { readableNumber } from "../../utils";
 
 const Card = memo(({ transaction, lastTransactionId }: { transaction: Transaction, lastTransactionId: number }) => {
     const queryClient = useQueryClient();
@@ -95,7 +96,7 @@ const Card = memo(({ transaction, lastTransactionId }: { transaction: Transactio
                         {err !== null ? "couldn't parse date" : formattedDate}
                     </div>
                     <div className={`text-xl font-medium ${isDeposit ? "text-green" : "text-red"}`}>
-                        {isDeposit ? "+" : "-"}{transaction.amount} IQD
+                        {isDeposit ? "+" : "-"}{readableNumber(transaction.amount)} IQD
                     </div>
                 </div>
             </div>

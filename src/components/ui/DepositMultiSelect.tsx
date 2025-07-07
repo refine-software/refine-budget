@@ -28,7 +28,7 @@ const DepositMultiSelect = memo(({ selected, setSelected }: Props) => {
                         <button
                             key={type}
                             onClick={() => toggleSelection(type)}
-                            className={`rounded-full border-2 px-3 py-1.5 text-sm font-semibold capitalize transition-colors duration-150 
+                            className={`rounded-full border-2 p-3 text-sm font-semibold capitalize transition-colors duration-150 
                                 ${isSelected
                                     ? "bg-primary text-white border-primary"
                                     : "bg-transparent text-white border-white/30 hover:border-white/60"}`}
