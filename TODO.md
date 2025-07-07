@@ -27,6 +27,7 @@
 - [x] Loading spiner on initial load doesn't exists, we should have initial load to finish the refresh token request.
 - [x] On initial page load the admin isn't set properly (when the user is admin the controls button in the nav doesn't show up).
 - [x] When spaming the confirm button on the admin transactions page that will result in multi request to the backend, which will create multiple transactions.
+- [ ] When admin change user role to admin the user will still have the old access token with user role built-in in the access token, quick fix will be to refresh tokens, the right way to do it is to fix the backend session management with redis.
 
 ## Feat
 
