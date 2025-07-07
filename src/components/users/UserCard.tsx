@@ -4,6 +4,7 @@ import verified from "/verified.png"
 import unverified from "/unverified.png"
 import { User } from "../../types";
 import EditUser from "./EditUser";
+import { readableNumber } from "../../utils";
 
 interface UserCardProps {
 	user: User;
@@ -50,7 +51,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 					<span>Debt</span>
 				</div>
 				<p className={`${user.debt > 0 && "text-red"}`}>
-					{user.debt} IQD
+					{readableNumber(user.debt)} IQD
 				</p>
 			</div>
 		</div>
