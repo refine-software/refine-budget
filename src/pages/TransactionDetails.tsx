@@ -75,11 +75,6 @@ const TransactionDetails = () => {
                 )}
 
                 <div>
-                    <p className="text-sm uppercase text-gray-400 mb-1">Made By</p>
-                    <p className="font-semibold">{data.made_by}</p>
-                </div>
-
-                <div>
                     <p className="text-sm uppercase text-gray-400 mb-1">Date</p>
                     <p className="font-semibold">{err ? data.transaction_date : formattedDate}</p>
                 </div>
