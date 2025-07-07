@@ -1,4 +1,3 @@
-import { getBudget } from "../api";
 import BudgetMoney from "../components/home/BudgetMoney";
 import DebtMoney from "../components/home/DebtMoney";
 
@@ -9,7 +8,7 @@ const Home = () => {
 			<div className="w-full flex flex-col justify-center items-center gap-6">
 				<div className="py-10 rounded-2xl w-full flex flex-col justify-center items-center gap-6 bg-grey shadow-2xl">
 					<p className="text-3xl font-bold">Our Budget</p>
-					<BudgetMoney func={getBudget} />
+					<BudgetMoney />
 				</div>
 				<div className="py-10 rounded-2xl w-full flex flex-col justify-center items-center gap-6 bg-grey shadow-2xl">
 					<p className="text-3xl font-bold">Your Debt</p>
