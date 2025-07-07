@@ -3,7 +3,12 @@ import threeDots from "/three-dots.svg";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../store/auth-context";
-import { deleteUser, editUserDebt, editUserRole, relieveUserDebt } from "../../api/admin/users";
+import {
+    deleteUser,
+    editUserDebt,
+    editUserRole,
+    relieveUserDebt,
+} from "../../api/admin/users";
 import { Role, User } from "../../types";
 import axios from "axios";
 import Modal from "../ui/Modal";
@@ -50,13 +55,14 @@ const EditUser = ({ user }: { user: User }) => {
         } catch (err) {
             console.log(err);
             setError("failed to delete user");
-        };
-    }
+        }
+    };
 
     const handleEditRole = async (role: Role) => {
         await editUserRole(role, user.id);
         queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
     };
+    console.log(error);
 
     return (
         <div className="relative">
@@ -64,7 +70,7 @@ const EditUser = ({ user }: { user: User }) => {
                 src={threeDots}
                 alt="user settings"
                 className="w-8 cursor-pointer py-2"
-                onClick={() => setIsDropdownOpen(prev => !prev)}
+                onClick={() => setIsDropdownOpen((prev) => !prev)}
             />
             {isDropdownOpen && (
                 <div className="absolute right-0 top-8 bg-[#333] text-white rounded-md z-50 w-48 overflow-hidden border-2 border-[#515151] shadow-2xl">
@@ -119,7 +125,9 @@ const EditUser = ({ user }: { user: User }) => {
                     <label>Debt Amount</label>
                     <input
                         type="number"
-                        onChange={(e) => { setNewDebt(parseInt(e.target.value)) }}
+                        onChange={(e) => {
+                            setNewDebt(parseInt(e.target.value));
+                        }}
                         required
                         className="w-full text-primary placeholder:text-[#515151] focus:placeholder:text-primary/40 border-2 border-[#515151] focus:border-primary focus:bg-primary/10 rounded-xl p-2"
                         placeholder="25000"
@@ -139,13 +147,13 @@ const EditUser = ({ user }: { user: User }) => {
                                 d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
                             />
                         </svg>
-                        &nbsp;
-                        Enter a positive number to increase the user's debt, or a negative number to decrease it.
+                        &nbsp; Enter a positive number to increase the user's debt, or a
+                        negative number to decrease it.
                     </small>
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default EditUser
+export default EditUser;
