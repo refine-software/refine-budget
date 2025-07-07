@@ -1,5 +1,6 @@
 import { JSX, memo } from "react";
-import back from "/Vector.svg"
+import next from "/next.png"
+import last from "/right-arrow.png"
 
 type Props = {
     currentPage: number;
@@ -52,12 +53,26 @@ const Pagination = memo(({ currentPage, pages, setPage }: Props) => {
     return (
         <div className="flex flex-col justify-center items-center gap-5">
             <div className="flex justify-center items-center gap-2">
-                <button onClick={() => setPage(1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === 1}>
-                    <img src={back} alt="go back" className="w-3" />
+                <button
+                    className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`}
+                    onClick={() => setPage(1)}
+                    disabled={currentPage === 1}
+                >
+                    <img src={last} alt="last page" className="w-8 rotate-180" />
+                </button>
+                <button onClick={() => setPage(currentPage - 1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage === 1 ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === 1}>
+                    <img src={next} alt="previous page" className="w-8 rotate-180" />
                 </button>
                 {paginationButtons}
-                <button onClick={() => setPage(pages)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === pages}>
-                    <img src={back} alt="go forward" className="w-3 rotate-180" />
+                <button onClick={() => setPage(currentPage + 1)} className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`} disabled={currentPage === pages}>
+                    <img src={next} alt="next page" className="w-8" />
+                </button>
+                <button
+                    className={`border border-white w-10 aspect-square flex justify-center items-center rounded-sm ${currentPage >= pages ? "bg-grey cursor-not-allowed" : "bg-primary"}`}
+                    onClick={() => setPage(pages)}
+                    disabled={currentPage === pages}
+                >
+                    <img src={last} alt="last page" className="w-8" />
                 </button>
             </div>
             <p className="opacity-75">{currentPage} out of {pages}</p>
