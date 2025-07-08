@@ -1,9 +1,9 @@
 import { memo, useState } from "react";
 import { DepositTypes, SortTypes, TransactionTypes } from "../../types";
 import Modal from "../ui/Modal";
-import filter from "/filter.png";
-import sort from "/sort.png";
 import DepositMultiSelect from "../ui/DepositMultiSelect";
+import filter from "../../assets/filter.png";
+import sort from "../../assets/sort.png";
 
 type Props = {
 	setSort: (sortType: SortTypes) => void;

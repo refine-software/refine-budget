@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
-import mail from "/mail.png"
-import transaction from "/transaction.png"
-import user from "/user.png"
+import mail from "../../assets/mail.png"
+import transaction from "../../assets/transaction.png"
+import user from "../../assets/user.png"
 
 type Control = {
 	id: number;

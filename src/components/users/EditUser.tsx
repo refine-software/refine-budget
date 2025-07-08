@@ -1,5 +1,6 @@
+import axios from "axios";
 import { useContext, useState } from "react";
-import threeDots from "/three-dots.svg";
+import { Role, User } from "../../types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../store/auth-context";
@@ -9,9 +10,8 @@ import {
     editUserRole,
     relieveUserDebt,
 } from "../../api/admin/users";
-import { Role, User } from "../../types";
-import axios from "axios";
 import Modal from "../ui/Modal";
+import threeDots from "../../assets/three-dots.svg";
 
 const EditUser = ({ user }: { user: User }) => {
     const queryClient = useQueryClient();
