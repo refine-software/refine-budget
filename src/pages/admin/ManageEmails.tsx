@@ -1,6 +1,6 @@
 import { useState } from "react";
-import deleteUserIcon from "/delete-user-icon.svg";
-import addUserIcon from "/add-user-icon.svg";
+import deleteUserIcon from "../../assets/delete-user-icon.svg";
+import addUserIcon from "../../assets/add-user-icon.svg";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addUserEmail, deleteUserEmail, getUserEmails } from "../../api/admin/emails";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";

@@ -1,10 +1,10 @@
-import profile from "/default-profile.svg";
-import debt from "/debt.png";
-import verified from "/verified.png"
-import unverified from "/unverified.png"
-import { User } from "../../types";
 import EditUser from "./EditUser";
+import { User } from "../../types";
 import { readableNumber } from "../../utils";
+import verified from "../../assets/verified.png"
+import unverified from "../../assets/unverified.png"
+import profile from "../../assets/default-profile.svg";
+import debt from "../../assets/debt.png";
 
 interface UserCardProps {
 	user: User;

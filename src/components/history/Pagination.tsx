@@ -1,6 +1,6 @@
 import { JSX, memo } from "react";
-import next from "/next.png"
-import last from "/right-arrow.png"
+import next from "../../assets/next.png"
+import last from "../../assets/right-arrow.png"
 
 type Props = {
     currentPage: number;

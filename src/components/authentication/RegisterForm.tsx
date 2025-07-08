@@ -1,32 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useFetcher, useNavigate } from "react-router";
 import { RegisterContext } from "../../store/register-context";
-import { AxiosError } from "axios";
+import chooseImage from "../../assets/choose-image.svg";
 
 const RegisterForm = () => {
     const navigate = useNavigate();
     const fetcher = useFetcher<{ success: boolean, status: number | null, err: AxiosError | Error } | undefined>();
     const { setEmail } = useContext(RegisterContext);
 
-    const [preview, setPreview] = useState<string>("/choose-image.svg");
+    const [preview, setPreview] = useState<string>(chooseImage);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [submittedEmail, setSubmittedEmail] = useState("");
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const url = URL.createObjectURL(file);
             setPreview(url);
         } else {
-            setPreview("/choose-image.svg");
+            setPreview(chooseImage);
         }
     };
 
     useEffect(() => {
         return () => {
-            if (preview && preview !== "/choose-image.svg") {
+            if (preview && preview !== chooseImage) {
                 URL.revokeObjectURL(preview);
             }
         };
