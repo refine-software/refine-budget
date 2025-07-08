@@ -19,6 +19,8 @@
 - [ ] Redesign the profile page and make it more functional.
 - [ ] Check all the possible invalidations for example when the user name changes the admin users needs to be invalidated, and other invalidations.
 - [ ] When logging out, we need to check the response of the logout first then logout from the frontend.
+- [ ] Show the deposit type on the transaction card.
+- [ ] Implement edit transaction functionality.
 
 ## Bugs
 
