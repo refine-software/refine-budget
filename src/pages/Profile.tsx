@@ -1,29 +1,34 @@
 import { useState, useContext } from "react";
 import { updateUsername, updateProfileImage, logoutUser } from "../api";
 import { AuthContext } from "../store/auth-context";
+import LazyImage from "../components/ui/LazyImage";
+import edit from "../assets/edit.png";
+import { useMutation } from "@tanstack/react-query";
 
 const Profile = () => {
-	const auth = useContext(AuthContext);
-	const { user, setUserCtx } = auth;
+	const { user, setUserCtx, logout } = useContext(AuthContext);
 	const [newUsername, setNewUsername] = useState("");
 
 	const handleLogout = () => {
 		logoutUser();
-		auth.logout();
+		logout();
 	};
 
-	const handleChangePicture = async (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const mutation = useMutation({
+		mutationFn: updateProfileImage,
+		onSuccess: (data) => {
+			const updatedUser = { ...user, image: data.image };
+			setUserCtx(updatedUser);
+		},
+		onError: (err) => {
+			console.error("Error updating profile image:", err);
+		},
+	});
+
+	const handleChangePicture = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
 			const file = e.target.files[0];
-			try {
-				const res = await updateProfileImage(file);
-				const updatedUser = { ...user, image: res.image };
-				setUserCtx(updatedUser); // Update context with the new user object
-			} catch (err) {
-				console.error("Error updating profile image:", err);
-			}
+			mutation.mutate(file);
 		}
 	};
 
@@ -39,18 +44,19 @@ const Profile = () => {
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-10">
-			<div className="flex justify-center items-center flex-col gap-4">
-				<div className="w-30 h-30 border-primary border-2 rounded-full flex items-center justify-center overflow-hidden relative">
-					<label
-						htmlFor="profileImageInput"
-						className="absolute bottom-0 w-full text-center font-medium"
-					>
-						<div className="bg-primary opacity-60 w-full h-full absolute"></div>
-						<span className="relative text-white opacity-100">
-							edit
-						</span>
-					</label>
-					<img className="object-cover w-full h-full" loading="lazy" src={user.image} alt="profile picture" />
+			<label
+				htmlFor="profileImageInput"
+				className="relative block w-40 h-40 rounded-full overflow-hidden cursor-pointer outline-2 outline-primary"
+			>
+				<LazyImage
+					src={user.image}
+					alt="profile picture"
+					wrapperClassName="w-full h-full rounded-full overflow-clip"
+					className="object-cover w-full h-full"
+				/>
+
+				<div className="absolute bottom-0 w-full h-8 p-1 bg-primary/80 flex justify-center items-center">
+					<img className="w-auto h-full" src={edit} alt="edit profile picture" />
 				</div>
 
 				<input
@@ -60,7 +66,9 @@ const Profile = () => {
 					onChange={handleChangePicture}
 					className="hidden"
 				/>
-			</div>
+			</label>
+
+
 
 			<div className="w-full flex justify-center items-center flex-col gap-4 mt-4">
 				<input
